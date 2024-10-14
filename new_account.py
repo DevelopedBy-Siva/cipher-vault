@@ -38,7 +38,7 @@ class NewPassword(TopLevel):
             )
             entry_box = tool.create_entry(
                 entry_box_container,
-                placeholder_text=entry["placeholder"],
+                placeholder=entry["placeholder"],
                 show=show,
                 border=False,
                 height=20,
@@ -73,6 +73,7 @@ class NewPassword(TopLevel):
                     bg=BUTTON["bg-light"],
                     hover_bg=BUTTON["hover-bg-l"],
                     text_color=TEXT["dark"],
+                    height=37,
                 )
                 generate_button.grid(column=3, row=row_idx, pady=gap_y, padx=(15, 0))
                 entry_box_column_span = 1
@@ -91,7 +92,7 @@ class NewPassword(TopLevel):
         save_button = tool.create_button(
             self, command=self.__save_password, title="Save to Vault"
         )
-        save_button.grid(column=1, columnspan=2, row=4, pady=(20, 0))
+        save_button.grid(column=1, columnspan=2, row=5, pady=(20, 0))
 
         self.grid_columnconfigure(1, weight=1)
 

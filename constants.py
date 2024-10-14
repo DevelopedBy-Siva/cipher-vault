@@ -10,7 +10,7 @@ WINDOW = {
         "heading": "New Account Information",
         "desc": "Store and organize passwords or sensitive data with ease.",
         "width": 600,
-        "height": 420,
+        "height": 490,
     },
     "export-import": {
         "title": "Export/Import",
@@ -27,6 +27,7 @@ USER_OPTIONS = {
         "icon": "add",
         "inputs": (
             {"title": "Account", "placeholder": "Enter account name"},
+            {"title": "URL (optional)", "placeholder": "Enter the URL"},
             {"title": "Email/Username", "placeholder": "Enter email or username"},
             {
                 "title": "Password",
@@ -43,9 +44,9 @@ USER_OPTIONS = {
 }
 
 BUTTON = {
-    "bg": "#0f172a",
-    "hover-bg": "#262E3F",
-    "bg-light": "#e7e7e9",
+    "bg": "#191919",
+    "hover-bg": "#2F2F2F",
+    "bg-light": "#eaeaea",
     "hover-bg-l": "#dbdcde",
     "color": "#fff",
     "icon": {
@@ -55,9 +56,11 @@ BUTTON = {
 }
 
 TEXT = {
-    "dark": "#0f172a",
-    "light": "grey",
+    "dark": "#191919",
+    "light": "#979797",
     "font": "Showcard Gothic",
     "bg": "#fff",
-    "border": "grey",
+    "border": "#979797",
+    "border-light": "#eaeaea",
+    "border-light-hover": "#e1e1e1",
 }

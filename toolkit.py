@@ -1,3 +1,4 @@
+import datetime
 from customtkinter import *
 from PIL import Image
 
@@ -21,6 +22,10 @@ def screen_size(window, width: int, height: int):
     screen_dp = "%dx%d+%d+%d" % (w, h, x, y)
 
     return (screen_dp, w, h)
+
+
+def current_datetime() -> str:
+    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def create_button(master, command, **kwargs) -> CTkButton:
@@ -58,16 +63,18 @@ def create_label(master, **kwargs) -> CTkLabel:
     font_size = kwargs.get("font_size", 12)
     text_color = kwargs.get("text_color", TEXT["dark"])
     height = kwargs.get("height", 25)
+    bg = kwargs.get("bg", TEXT["bg"])
 
     label = CTkLabel(
         master,
         text=text,
         text_color=text_color,
         font=(TEXT["font"], font_size),
-        fg_color=TEXT["bg"],
-        bg_color=TEXT["bg"],
+        fg_color=bg,
+        bg_color=bg,
         anchor="w",
         height=height,
+        width=100,
     )
     return label
 
@@ -76,12 +83,14 @@ def create_container(master, **kwargs) -> CTkFrame:
     bg = kwargs.get("bg", WINDOW["bg"])
     border_width = kwargs.get("border_width", 0)
     border_color = kwargs.get("border_color", TEXT["bg"])
+    height = kwargs.get("height", 0)
     return CTkFrame(
         master,
-        bg_color=bg,
+        bg_color=WINDOW["bg"],
         fg_color=bg,
         border_color=border_color,
         border_width=border_width,
+        height=height,
     )
 
 

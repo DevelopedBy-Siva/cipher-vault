@@ -1,15 +1,18 @@
 from customtkinter import *
+from tkinter import ttk
 
 import toolkit as tool
 from constants import *
-from new_password import NewPassword
+from new_account import NewPassword
 from export_import import ExportImport
+from account_table import AccountTable
 
 
 class Home:
     def __init__(self, root: CTk) -> None:
         self.root = root
         self.__create_header()
+        self.__show_account_details()
         self.__new_password = NewPassword(root)
         self.__export_import = ExportImport(root)
 
@@ -39,7 +42,7 @@ class Home:
         subheading.grid(column=0, row=1, sticky="w")
 
         # Create search box
-        search_box = tool.create_entry(container, placeholder_text="Search accounts...")
+        search_box = tool.create_entry(container, placeholder="Search accounts...")
         search_box.grid(column=0, row=1, sticky="nwse")
 
         # Create user options
@@ -53,8 +56,15 @@ class Home:
 
         container.grid_columnconfigure(0, weight=1)
 
-    def __show_passwords(self):
-        pass
+    def __show_account_details(self) -> None:
+
+        table_container = tool.create_container(self.root)
+        table_container.grid(column=0, row=2, sticky="news", pady=(40, 0))
+
+        _ = AccountTable(table_container)
+
+        table_container.grid_columnconfigure(0, weight=1)
+        self.root.grid_rowconfigure(2, weight=1)
 
     def __navigate_to(self, key: str) -> None:
         if key == "new":
