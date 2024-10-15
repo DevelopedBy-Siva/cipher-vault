@@ -1,6 +1,8 @@
 APP_NAME = "Vault"
 LOGO = "./static/logo.png"
 
+GEN_PASS_LENGTH = 12
+
 WINDOW = {
     "bg": "#fff",
     "width": 860,
@@ -26,14 +28,27 @@ USER_OPTIONS = {
         "title": "Add Credentials",
         "icon": "add",
         "inputs": (
-            {"title": "Account", "placeholder": "Enter account name"},
-            {"title": "URL (optional)", "placeholder": "Enter the URL"},
-            {"title": "Email/Username", "placeholder": "Enter email or username"},
+            {
+                "title": "Account",
+                "placeholder": "Enter account name",
+                "key": "account",
+            },
+            {
+                "title": "URL (optional)",
+                "placeholder": "Enter the URL",
+                "key": "url",
+            },
+            {
+                "title": "Email/Username",
+                "placeholder": "Enter email or username",
+                "key": "username",
+            },
             {
                 "title": "Password",
                 "placeholder": "Enter or Create password",
                 "show": "*",
                 "command": {"title": "Generate Password"},
+                "key": "password",
             },
         ),
     },
@@ -42,6 +57,7 @@ USER_OPTIONS = {
         "icon": "export-import",
     },
 }
+
 
 BUTTON = {
     "bg": "#191919",

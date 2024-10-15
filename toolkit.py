@@ -99,6 +99,7 @@ def create_entry(master, **kwargs) -> CTkEntry:
     placeholder = kwargs.get("placeholder", "Enter input...")
     height = kwargs.get("height", 35)
     show = kwargs.get("show", "")
+    value = kwargs.get("value", None)
 
     border = kwargs.get("border", True)
     border_width = 0
@@ -107,7 +108,7 @@ def create_entry(master, **kwargs) -> CTkEntry:
         border_width = 1
         border_color = TEXT["border"]
 
-    return CTkEntry(
+    entry = CTkEntry(
         master,
         bg_color=TEXT["bg"],
         fg_color=TEXT["bg"],
@@ -119,6 +120,9 @@ def create_entry(master, **kwargs) -> CTkEntry:
         height=height,
         show=show,
     )
+    if value:
+        entry.insert(0, value)
+    return entry
 
 
 def ctk_image(icon_name: str, size: tuple = (10, 10)) -> CTkImage:

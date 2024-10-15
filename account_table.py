@@ -29,7 +29,7 @@ class AccountTable:
         scrollable_container.grid_rowconfigure(1, weight=1)
 
         for i in range(3):
-            each_row = tool.create_container(scrollable_container, bg="red", height=50)
+            each_row = tool.create_container(scrollable_container)
             each_row.grid(column=0, row=i, sticky="ew")
             for idx in range(0, 3):
                 data_column = tool.create_label(

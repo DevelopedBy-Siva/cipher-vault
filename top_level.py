@@ -18,7 +18,6 @@ class TopLevel(CTkToplevel):
         self.__parent = master
         self.__key = key
         super().__init__(self.__parent)
-        self.withdraw()  # Keep the window hidden until user opens
 
         # Set the position and dimensions of the window
         dimension, width, height = tool.screen_size(
@@ -34,6 +33,11 @@ class TopLevel(CTkToplevel):
 
         # Column span size
         self.__grid_y_size = kwargs.get("grid_y_size", 2)
+
+        # Activate only modal
+        self.transient(self.__parent)
+        self.grab_set()
+        self.focus_set()
 
         # Create header and subheading wrapper
         self.__create_header()
@@ -63,19 +67,10 @@ class TopLevel(CTkToplevel):
         )
         subheading.grid(column=0, row=1, sticky="w")
 
-    def open_window(self) -> None:
-        """
-        Open window
-        """
-        self.deiconify()
-        self.transient(self.__parent)
-        self.grab_set()
-        self.focus_set()
-
     def close_window(self) -> None:
         """
         Close window
         """
-        self.withdraw()
         self.grab_release()
         self.master.focus_set()
+        self.destroy()

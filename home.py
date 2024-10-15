@@ -13,8 +13,6 @@ class Home:
         self.root = root
         self.__create_header()
         self.__show_account_details()
-        self.__new_password = NewPassword(root)
-        self.__export_import = ExportImport(root)
 
     def __create_header(self) -> None:
 
@@ -68,8 +66,8 @@ class Home:
 
     def __navigate_to(self, key: str) -> None:
         if key == "new":
-            self.__new_password.open_window()
+            _ = NewPassword(self.root)
         elif key == "exp-imp":
-            self.__export_import.open_window()
+            _ = ExportImport(self.root)
         else:
             pass
