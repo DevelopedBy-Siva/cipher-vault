@@ -100,6 +100,7 @@ def create_entry(master, **kwargs) -> CTkEntry:
     height = kwargs.get("height", 35)
     show = kwargs.get("show", "")
     value = kwargs.get("value", None)
+    width = kwargs.get("width", 0)
 
     border = kwargs.get("border", True)
     border_width = 0
@@ -119,6 +120,7 @@ def create_entry(master, **kwargs) -> CTkEntry:
         placeholder_text_color=TEXT["light"],
         height=height,
         show=show,
+        width=width,
     )
     if value:
         entry.insert(0, value)

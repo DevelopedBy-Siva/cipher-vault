@@ -1,5 +1,4 @@
-APP_NAME = "Vault"
-LOGO = "./static/logo.png"
+APP_NAME = "CipherVault"
 
 GEN_PASS_LENGTH = 12
 
@@ -79,4 +78,35 @@ TEXT = {
     "border": "#979797",
     "border-light": "#eaeaea",
     "border-light-hover": "#e1e1e1",
+    "error": "red",
+}
+
+AUTH_FIELDS = {
+    "username": {
+        "env": f"{APP_NAME}_USERNAME",
+        "max_len": 12,
+        "min_len": 3,
+        "title": "Username",
+        "placeholder": "Enter the username",
+        "show": "",
+        "error": {
+            "empty": "Username cannot be left blank",
+            "404": "Oops! We couldn't find the account. Why not create a new one?",
+            "present": "Whoops! That account is already registered",
+            "long": "Username must be 3-12 characters!",
+        },
+    },
+    "password": {
+        "env": f"{APP_NAME}_PASSWORD",
+        "max_len": 16,
+        "min_len": 8,
+        "title": "Password",
+        "placeholder": "Enter the password",
+        "show": "*",
+        "error": {
+            "empty": "Password cannot be empty",
+            "incorrect": "The password you entered is incorrect. Please try again",
+            "long": "Password must be 8-16 characters!",
+        },
+    },
 }

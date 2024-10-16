@@ -8,6 +8,7 @@ _DATA_COLUMNS = ("Account", "Username", "Last Modified")
 
 
 class AccountTable:
+
     def __init__(self, master: CTkFrame) -> None:
         self.__master = master
         self.__create_columns()

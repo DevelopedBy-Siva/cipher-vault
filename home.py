@@ -9,6 +9,7 @@ from account_table import AccountTable
 
 
 class Home:
+
     def __init__(self, root: CTk) -> None:
         self.root = root
         self.__create_header()
