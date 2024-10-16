@@ -1,7 +1,7 @@
 import datetime
 import random
 import string
-from customtkinter import *
+import customtkinter as ctk
 from PIL import Image
 
 from constants import *
@@ -30,7 +30,7 @@ def current_datetime() -> str:
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def create_button(master, command, **kwargs) -> CTkButton:
+def create_button(master, command, **kwargs) -> ctk.CTkButton:
 
     text = kwargs.get("title", "Unknown")
     font_size = kwargs.get("font_size", 12)
@@ -41,7 +41,7 @@ def create_button(master, command, **kwargs) -> CTkButton:
     text_color = kwargs.get("text_color", BUTTON["color"])
     icon = kwargs.get("icon", None)
 
-    button = CTkButton(
+    button = ctk.CTkButton(
         master,
         text=text.title(),
         font=(TEXT["font"], font_size),
@@ -51,7 +51,7 @@ def create_button(master, command, **kwargs) -> CTkButton:
         text_color=text_color,
         height=height,
         image=icon,
-        state=NORMAL,
+        state="normal",
         anchor="center",
         command=command,
         width=width,
@@ -59,7 +59,7 @@ def create_button(master, command, **kwargs) -> CTkButton:
     return button
 
 
-def create_label(master, **kwargs) -> CTkLabel:
+def create_label(master, **kwargs) -> ctk.CTkLabel:
 
     text = kwargs.get("title", "Unknown")
     font_size = kwargs.get("font_size", 12)
@@ -67,7 +67,7 @@ def create_label(master, **kwargs) -> CTkLabel:
     height = kwargs.get("height", 25)
     bg = kwargs.get("bg", TEXT["bg"])
 
-    label = CTkLabel(
+    label = ctk.CTkLabel(
         master,
         text=text,
         text_color=text_color,
@@ -81,12 +81,12 @@ def create_label(master, **kwargs) -> CTkLabel:
     return label
 
 
-def create_container(master, **kwargs) -> CTkFrame:
+def create_container(master, **kwargs) -> ctk.CTkFrame:
     bg = kwargs.get("bg", WINDOW["bg"])
     border_width = kwargs.get("border_width", 0)
     border_color = kwargs.get("border_color", TEXT["bg"])
     height = kwargs.get("height", 0)
-    return CTkFrame(
+    return ctk.CTkFrame(
         master,
         bg_color=WINDOW["bg"],
         fg_color=bg,
@@ -96,7 +96,7 @@ def create_container(master, **kwargs) -> CTkFrame:
     )
 
 
-def create_entry(master, **kwargs) -> CTkEntry:
+def create_entry(master, **kwargs) -> ctk.CTkEntry:
 
     placeholder = kwargs.get("placeholder", "Enter input...")
     height = kwargs.get("height", 35)
@@ -111,7 +111,7 @@ def create_entry(master, **kwargs) -> CTkEntry:
         border_width = 1
         border_color = TEXT["border"]
 
-    entry = CTkEntry(
+    entry = ctk.CTkEntry(
         master,
         bg_color=TEXT["bg"],
         fg_color=TEXT["bg"],
@@ -129,9 +129,9 @@ def create_entry(master, **kwargs) -> CTkEntry:
     return entry
 
 
-def ctk_image(icon_name: str, size: tuple = (10, 10)) -> CTkImage:
+def ctk_image(icon_name: str, size: tuple = (10, 10)) -> ctk.CTkImage:
     icon_img = Image.open(BUTTON["icon"][icon_name])
-    icon = CTkImage(light_image=icon_img, dark_image=icon_img, size=size)
+    icon = ctk.CTkImage(light_image=icon_img, dark_image=icon_img, size=size)
     return icon
 
 

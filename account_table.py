@@ -1,4 +1,4 @@
-from customtkinter import *
+import customtkinter as ctk
 from tkinter import Scrollbar
 
 import toolkit as tool
@@ -9,7 +9,7 @@ _DATA_COLUMNS = ("Account", "Username", "Last Modified")
 
 class AccountTable:
 
-    def __init__(self, master: CTkFrame) -> None:
+    def __init__(self, master: ctk.CTkFrame) -> None:
         self.__master = master
         self.__create_columns()
         self.__create_rows()
@@ -42,6 +42,6 @@ class AccountTable:
                 each_row.grid_columnconfigure(idx, weight=1)
             self.__draw_border_bottom(each_row)
 
-    def __draw_border_bottom(self, master: CTkFrame) -> None:
+    def __draw_border_bottom(self, master: ctk.CTkFrame) -> None:
         bottom_border = tool.create_container(master, bg=TEXT["border-light"], height=1)
         bottom_border.grid(column=0, row=1, columnspan=len(_DATA_COLUMNS), sticky="we")

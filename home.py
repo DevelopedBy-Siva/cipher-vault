@@ -1,5 +1,4 @@
-from customtkinter import *
-from tkinter import ttk
+import customtkinter as ctk
 
 import toolkit as tool
 from constants import *
@@ -8,17 +7,21 @@ from export_import import ExportImport
 from account_table import AccountTable
 
 
-class Home:
+class Home(ctk.CTkFrame):
 
-    def __init__(self, root: CTk) -> None:
-        self.root = root
+    def __init__(self, root: ctk.CTk) -> None:
+        self.__root = root
+        super().__init__(self.__root)
         self.__create_header()
         self.__show_account_details()
+        self.configure(bg_color=WINDOW["bg"], fg_color=WINDOW["bg"])
+        self.grid(column=0, row=0, sticky="news", padx=50, pady=30)
+        self.grid_columnconfigure(0, weight=1)
 
     def __create_header(self) -> None:
 
         # Create a header wrapper
-        container = tool.create_container(self.root)
+        container = tool.create_container(self)
         container.grid(column=0, row=1, sticky="ew", pady=(20, 0))
 
         # Create header and subheading wrapper
@@ -57,18 +60,18 @@ class Home:
 
     def __show_account_details(self) -> None:
 
-        table_container = tool.create_container(self.root)
+        table_container = tool.create_container(self)
         table_container.grid(column=0, row=2, sticky="news", pady=(40, 0))
 
         _ = AccountTable(table_container)
 
         table_container.grid_columnconfigure(0, weight=1)
-        self.root.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(2, weight=1)
 
     def __navigate_to(self, key: str) -> None:
         if key == "new":
-            _ = NewPassword(self.root)
+            _ = NewPassword(self.__root)
         elif key == "exp-imp":
-            _ = ExportImport(self.root)
+            _ = ExportImport(self.__root)
         else:
             pass

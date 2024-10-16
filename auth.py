@@ -1,18 +1,18 @@
 import os
 from typing import Union
-from customtkinter import *
+import customtkinter as ctk
 
 from constants import *
 import toolkit as tool
 import home
 
 
-class Authentication(CTkFrame):
+class Authentication(ctk.CTkFrame):
 
-    def __init__(self, root: CTk) -> None:
+    def __init__(self, root: ctk.CTk) -> None:
         super().__init__(root, bg_color=WINDOW["bg"], fg_color=WINDOW["bg"])
         self.__root = root
-        self.place(relx=0.5, rely=0.5, anchor=CENTER)
+        self.place(relx=0.5, rely=0.5, anchor="center")
         self.__entries = {}
         self.__paint_ui()
 
@@ -58,7 +58,12 @@ class Authentication(CTkFrame):
 
         row += 1
         new_account_btn = tool.create_button(
-            self, command=lambda: self.__submit(True), title="Create Account"
+            self,
+            command=lambda: self.__submit(True),
+            title="Create Account",
+            bg=BUTTON["bg-light"],
+            hover_bg=BUTTON["hover-bg-l"],
+            text_color=TEXT["dark"],
         )
         new_account_btn.grid(column=0, row=row, sticky="w", pady=(20, 5))
 

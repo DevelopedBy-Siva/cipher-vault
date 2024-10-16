@@ -1,5 +1,3 @@
-from customtkinter import *
-
 from top_level import TopLevel
 from constants import *
 

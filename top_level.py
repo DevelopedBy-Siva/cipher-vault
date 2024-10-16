@@ -1,12 +1,12 @@
-from customtkinter import *
+import customtkinter as ctk
 
 from constants import *
 import toolkit as tool
 
 
-class TopLevel(CTkToplevel):
+class TopLevel(ctk.CTkToplevel):
 
-    def __init__(self, master: CTk, key: str, **kwargs) -> None:
+    def __init__(self, master: ctk.CTk, key: str, **kwargs) -> None:
         """
         CustomTKinter TopLevel component extension
         Args:

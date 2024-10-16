@@ -1,4 +1,4 @@
-from customtkinter import *
+import customtkinter as ctk
 
 import toolkit as tool
 from top_level import TopLevel
@@ -104,7 +104,7 @@ class NewPassword(TopLevel):
         for key, entry in self.__entries.items():
             value = entry.get().strip()
             # Validation
-            if key != "url" and isinstance(entry, CTkEntry):
+            if key != "url" and isinstance(entry, ctk.CTkEntry):
                 if len(value) == 0:
                     is_valid = False
             data[key] = value
@@ -112,7 +112,7 @@ class NewPassword(TopLevel):
             return
         self.close_window()
 
-    def __toggle_password(self, entry: CTkEntry, button: CTkButton) -> None:
+    def __toggle_password(self, entry: ctk.CTkEntry, button: ctk.CTkButton) -> None:
         if entry.cget("show") == "":
             entry.configure(show="*")
             button.configure(image=self.__password_hide_ico)
@@ -124,6 +124,6 @@ class NewPassword(TopLevel):
         # Generates a random password
         new_password = tool.generate_password()
         entry = self.__entries.get("password", None)
-        if isinstance(entry, CTkEntry):
-            entry.delete(0, END)
+        if isinstance(entry, ctk.CTkEntry):
+            entry.delete(0, "end")
             entry.insert(0, new_password)
