@@ -1,4 +1,6 @@
 import datetime
+import random
+import string
 from customtkinter import *
 from PIL import Image
 
@@ -131,3 +133,26 @@ def ctk_image(icon_name: str, size: tuple = (10, 10)) -> CTkImage:
     icon_img = Image.open(BUTTON["icon"][icon_name])
     icon = CTkImage(light_image=icon_img, dark_image=icon_img, size=size)
     return icon
+
+
+def generate_password() -> str:
+    rules = (
+        string.ascii_lowercase,
+        string.ascii_uppercase,
+        range(0, 10),
+        ("!", "#", "$", "%", "&", "(", ")", "*", "+"),
+    )
+    new_password = ""
+    # Make sure a character is generated from each rule
+    for rule in rules:
+        new_password += str(random.choice(rule))
+    # Generate random characters
+    for _ in range(0, GEN_PASS_LENGTH - len(new_password)):
+        rule = random.choice(rules)
+        new_password += str(random.choice(rule))
+
+    # Shuffle the letters
+    new_password = list(new_password)
+    random.shuffle(new_password)
+    new_password = "".join(new_password)
+    return new_password

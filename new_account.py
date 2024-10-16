@@ -1,6 +1,4 @@
 from customtkinter import *
-import string
-import random
 
 import toolkit as tool
 from top_level import TopLevel
@@ -94,13 +92,13 @@ class NewPassword(TopLevel):
             entry_box_container.grid_rowconfigure(0, weight=1)
 
         save_button = tool.create_button(
-            self, command=self.__save_password, title="Save to Vault"
+            self, command=self.__save_account, title="Save to Vault"
         )
         save_button.grid(column=1, columnspan=2, row=5, pady=(20, 0))
 
         self.grid_columnconfigure(1, weight=1)
 
-    def __save_password(self) -> None:
+    def __save_account(self) -> None:
         is_valid = True
         data = {}
         for key, entry in self.__entries.items():
@@ -113,7 +111,6 @@ class NewPassword(TopLevel):
         if not is_valid:
             return
         self.close_window()
-        print(data)
 
     def __toggle_password(self, entry: CTkEntry, button: CTkButton) -> None:
         if entry.cget("show") == "":
@@ -124,26 +121,8 @@ class NewPassword(TopLevel):
             button.configure(image=self.__password_show_ico)
 
     def __generate_password(self) -> None:
-        rules = (
-            string.ascii_lowercase,
-            string.ascii_uppercase,
-            range(0, 10),
-            ("!", "#", "$", "%", "&", "(", ")", "*", "+"),
-        )
-        new_password = ""
-        # Make sure a character is generated from each rule
-        for rule in rules:
-            new_password += str(random.choice(rule))
-        # Generate random characters
-        for _ in range(0, GEN_PASS_LENGTH - len(new_password)):
-            rule = random.choice(rules)
-            new_password += str(random.choice(rule))
-
-        # Shuffle the letters
-        new_password = list(new_password)
-        random.shuffle(new_password)
-        new_password = "".join(new_password)
-
+        # Generates a random password
+        new_password = tool.generate_password()
         entry = self.__entries.get("password", None)
         if isinstance(entry, CTkEntry):
             entry.delete(0, END)
