@@ -66,6 +66,7 @@ def create_label(master, **kwargs) -> ctk.CTkLabel:
     text_color = kwargs.get("text_color", TEXT["dark"])
     height = kwargs.get("height", 25)
     bg = kwargs.get("bg", TEXT["bg"])
+    width = kwargs.get("width", 0)
 
     label = ctk.CTkLabel(
         master,
@@ -76,19 +77,21 @@ def create_label(master, **kwargs) -> ctk.CTkLabel:
         bg_color=bg,
         anchor="w",
         height=height,
-        width=100,
+        width=width,
+        wraplength=width,
     )
     return label
 
 
 def create_container(master, **kwargs) -> ctk.CTkFrame:
     bg = kwargs.get("bg", WINDOW["bg"])
+    fg = kwargs.get("fg", WINDOW["bg"])
     border_width = kwargs.get("border_width", 0)
     border_color = kwargs.get("border_color", TEXT["bg"])
     height = kwargs.get("height", 0)
     return ctk.CTkFrame(
         master,
-        bg_color=WINDOW["bg"],
+        bg_color=fg,
         fg_color=bg,
         border_color=border_color,
         border_width=border_width,

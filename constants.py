@@ -2,6 +2,8 @@ APP_NAME = "CipherVault"
 
 GEN_PASS_LENGTH = 12
 
+DATA_PATH = "./data/data.csv"
+
 WINDOW = {
     "bg": "#fff",
     "width": 860,

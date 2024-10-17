@@ -66,6 +66,7 @@ class Home(ctk.CTkFrame):
         _ = AccountTable(table_container)
 
         table_container.grid_columnconfigure(0, weight=1)
+        table_container.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
     def __navigate_to(self, key: str) -> None:

@@ -24,8 +24,9 @@ class Authentication(ctk.CTkFrame):
         title.grid(column=0, row=0, columnspan=2)
         description = tool.create_label(
             self,
-            title="Access your vault with CipherVault credentials or create a new\naccount in seconds. Your data is encrypted and stored locally,\n so make sure to back it up before creating a new account, as\nthis will replace any existing vault.",
+            title="Access your vault with CipherVault credentials or create a new account in seconds. Your data is encrypted and stored locally, so make sure to back it up before creating a new account, as this will replace any existing vault.",
             text_color=TEXT["light"],
+            width=365,
         )
         description.grid(column=0, row=1, pady=(10, 20), columnspan=2)
 
