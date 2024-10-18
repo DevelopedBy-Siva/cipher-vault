@@ -1,18 +1,23 @@
 import customtkinter as ctk
+import pandas as pd
 
 import toolkit as tool
 from constants import *
 from new_account import NewPassword
 from export_import import ExportImport
-from account_table import AccountTable
+from table import Table
 
 
 class Home(ctk.CTkFrame):
+
+    __DATA_COLUMNS = ("Account", "Username", "Last Modified")
 
     def __init__(self, root: ctk.CTk) -> None:
         self.__root = root
         super().__init__(self.__root)
         self.__create_header()
+        self.__data = self.retrieve_data()
+        self.__table = None
         self.__show_account_details()
         self.configure(bg_color=WINDOW["bg"], fg_color=WINDOW["bg"])
         self.grid(column=0, row=0, sticky="news", padx=50, pady=30)
@@ -60,13 +65,15 @@ class Home(ctk.CTkFrame):
 
     def __show_account_details(self) -> None:
 
-        table_container = tool.create_container(self)
+        table_container = tool.create_container(self, bg="red")
         table_container.grid(column=0, row=2, sticky="news", pady=(40, 0))
 
-        _ = AccountTable(table_container)
+        self.__table = Table(
+            self.__root, table_container, self.__DATA_COLUMNS, self.__data
+        )
 
         table_container.grid_columnconfigure(0, weight=1)
-        table_container.grid_rowconfigure(1, weight=1)
+        table_container.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
     def __navigate_to(self, key: str) -> None:
@@ -76,3 +83,7 @@ class Home(ctk.CTkFrame):
             _ = ExportImport(self.__root)
         else:
             pass
+
+    def retrieve_data(self) -> pd.DataFrame:
+        data_frame = pd.read_csv(DATA_PATH)
+        return data_frame

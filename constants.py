@@ -22,6 +22,13 @@ WINDOW = {
         "width": 540,
         "height": 460,
     },
+    "account-details": {
+        "title": "Account Snapshot",
+        "heading": "Account Snapshot",
+        "desc": "Manage your stored credentials—view, modify, or remove them from the vault.",
+        "width": 540,
+        "height": 460,
+    },
 }
 
 USER_OPTIONS = {
@@ -81,6 +88,7 @@ TEXT = {
     "border-light": "#eaeaea",
     "border-light-hover": "#e1e1e1",
     "error": "red",
+    "bg-hover": "#eef7fa",
 }
 
 AUTH_FIELDS = {
