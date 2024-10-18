@@ -24,12 +24,12 @@ class Table(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
 
     def __heading(self) -> None:
-        heading_container = tool.create_container(self, bg=BUTTON["bg-light"])
+        heading_container = tool.create_container(self, bg=TABLE["header"])
         heading_container.grid(column=0, row=0, sticky="ew")
         heading_container.grid_columnconfigure(0, weight=1)
 
         wrapper = tool.create_container(
-            heading_container, bg=BUTTON["bg-light"], fg="transparent"
+            heading_container, bg=TABLE["header"], fg="transparent"
         )
         wrapper.grid(column=0, row=0, sticky="ew", padx=(5, 15), pady=5)
         for idx, val in enumerate(self.__columns):
@@ -38,7 +38,8 @@ class Table(ctk.CTkFrame):
                 title=f"    {val}",
                 width=100,
                 height=40,
-                bg=BUTTON["bg-light"],
+                bg=TABLE["header"],
+                text_color=TEXT["bg"],
             )
             col_name.grid(column=idx, row=0, sticky="w", pady=4)
             wrapper.grid_columnconfigure(idx, weight=1)
@@ -64,7 +65,7 @@ class Table(ctk.CTkFrame):
         self.__tree.bind("<<TreeviewSelect>>", self.__open_account)
 
         # Handle row hover
-        self.__tree.tag_configure("highlight", background=TEXT["bg-hover"])
+        self.__tree.tag_configure("highlight", background=TABLE["bg-hover"])
         self.__tree.bind("<Motion>", self.__highlight_row)
 
         # Create columns
@@ -73,8 +74,15 @@ class Table(ctk.CTkFrame):
 
         # Insert data to columns
         data = self.__data[list(self.__columns)]
-        for _, row in data.iterrows():
-            self.__tree.insert("", "end", values=[f"   {val}".title() for val in row])
+        for idx, (_, row) in enumerate(data.iterrows()):
+            row_tag = "odd_row"
+            if idx % 2 == 0:
+                row_tag = "even_row"
+            self.__tree.insert(
+                "", "end", values=[f"   {val}".title() for val in row], tags=(row_tag,)
+            )
+            self.__tree.tag_configure("odd_row", background=TABLE["odd"])
+            self.__tree.tag_configure("even_row", background=TABLE["even"])
 
     def __style(self) -> None:
         style = ttk.Style()
@@ -88,7 +96,7 @@ class Table(ctk.CTkFrame):
         )
         style.map(
             "Treeview",
-            background=[("selected", TEXT["bg-hover"])],
+            background=[("selected", TABLE["bg-hover"])],
             foreground=[("selected", TEXT["dark"])],
         )
 

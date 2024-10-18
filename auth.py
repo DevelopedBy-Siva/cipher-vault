@@ -159,6 +159,11 @@ class Authentication(ctk.CTkFrame):
                 is_valid = False
                 error_msg = AUTH_FIELDS[key]["error"]["long"]
                 self.__entries[key][1].configure(text=error_msg)
+            elif key == "username" and not tool.username_valid(value):
+                is_valid = False
+                error_msg = AUTH_FIELDS[key]["error"]["invalid"]
+                self.__entries[key][1].configure(text=error_msg)
+                pass
             else:
                 self.__entries[key][1].configure(text="")
         return is_valid

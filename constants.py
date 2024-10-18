@@ -88,7 +88,6 @@ TEXT = {
     "border-light": "#eaeaea",
     "border-light-hover": "#e1e1e1",
     "error": "red",
-    "bg-hover": "#eef7fa",
 }
 
 AUTH_FIELDS = {
@@ -104,6 +103,7 @@ AUTH_FIELDS = {
             "404": "Oops! We couldn't find the account. Why not create a new one?",
             "present": "Whoops! That account is already registered",
             "long": "Username must be 3-12 characters!",
+            "invalid": "Username can only contain letters, digits, and spaces",
         },
     },
     "password": {
@@ -119,4 +119,11 @@ AUTH_FIELDS = {
             "long": "Password must be 8-16 characters!",
         },
     },
+}
+
+TABLE = {
+    "header": "#191919",
+    "bg-hover": "#eef7fa",
+    "odd": "#f5f6f8",
+    "even": "#fff",
 }

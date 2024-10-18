@@ -159,3 +159,11 @@ def generate_password() -> str:
     random.shuffle(new_password)
     new_password = "".join(new_password)
     return new_password
+
+
+def username_valid(value: str) -> bool:
+    valid = True
+    for char in value:
+        if not (char in string.ascii_letters or char in string.digits or char == " "):
+            valid = False
+    return valid
