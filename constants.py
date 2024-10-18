@@ -1,5 +1,10 @@
 APP_NAME = "CipherVault"
 
+AUTH_FILE = {
+    "header": "AUTH",
+    "path": "./data/config.ini",
+}
+
 GEN_PASS_LENGTH = 12
 
 DATA_PATH = "./data/data.csv"
@@ -92,7 +97,6 @@ TEXT = {
 
 AUTH_FIELDS = {
     "username": {
-        "env": f"{APP_NAME}_USERNAME",
         "max_len": 12,
         "min_len": 3,
         "title": "Username",
@@ -104,10 +108,10 @@ AUTH_FIELDS = {
             "present": "Whoops! That account is already registered",
             "long": "Username must be 3-12 characters!",
             "invalid": "Username can only contain letters, digits, and spaces",
+            "unknown": "Oops! Something went wrong. Try again",
         },
     },
     "password": {
-        "env": f"{APP_NAME}_PASSWORD",
         "max_len": 16,
         "min_len": 8,
         "title": "Password",
@@ -123,7 +127,7 @@ AUTH_FIELDS = {
 
 TABLE = {
     "header": "#191919",
-    "bg-hover": "#eef7fa",
-    "odd": "#f5f6f8",
+    "bg-hover": "#f1f8fb",
+    "odd": "#f6f6f8",
     "even": "#fff",
 }

@@ -1,5 +1,3 @@
-import os
-from typing import Union
 import customtkinter as ctk
 
 from constants import *
@@ -87,14 +85,18 @@ class Authentication(ctk.CTkFrame):
             return
 
         account_data["username"] = account_data["username"].lower()
+        # Hash the plain password
+        account_data["password"] = tool.hash_password(account_data["password"])
+
+        auth_info = tool.auth_info()
         # Login
         if not new_account:
             # Check account is present
-            if self.__env_data("username") == account_data["username"]:
+            if auth_info != None and (auth_info[0] == account_data["username"]):
                 # validate password
-                if self.__env_data("username") != account_data["password"]:
+                if auth_info[1] != account_data["password"]:
                     error_msg = AUTH_FIELDS["password"]["error"]["incorrect"]
-                    self.__entries["username"][1].configure(text=error_msg)
+                    self.__entries["password"][1].configure(text=error_msg)
                     return
             else:
                 error_msg = AUTH_FIELDS["username"]["error"]["404"]
@@ -103,17 +105,20 @@ class Authentication(ctk.CTkFrame):
         # New account creation
         else:
             # Cannot create if new username matches with previous username
-            if self.__env_data("username") == account_data["username"]:
+            if auth_info != None and (auth_info[0] == account_data["username"]):
                 error_msg = AUTH_FIELDS["username"]["error"]["present"]
                 self.__entries["username"][1].configure(text=error_msg)
                 return
             # Create Account
             else:
-                user_env_name = AUTH_FIELDS["username"]["env"]
-                os.environ[user_env_name] = account_data["username"]
-                pass_env_name = AUTH_FIELDS["username"]["env"]
-                os.environ[pass_env_name] = account_data["password"]
-                self.__cleanup()
+                if tool.save_auth_info(account_data):
+                    # Account created
+                    self.__cleanup()
+                else:
+                    # Something went wrong while saving files
+                    error_msg = AUTH_FIELDS["username"]["error"]["unknown"]
+                    self.__entries["username"][1].configure(text=error_msg)
+                    return
 
         self.destroy()  # Destroy the auth widget
 
@@ -122,21 +127,6 @@ class Authentication(ctk.CTkFrame):
         # Create the Home UI
         _ = home.Home(self.__root)
         self.__root.update_idletasks()
-
-    def __env_data(self, key: str) -> Union[str, None]:
-        """
-        Retrieve env data
-        Args:
-            key (str): Env variable identifier suffix
-        Returns:
-            Union[str, None]: Returns env data if found, else returns None
-        """
-        env_name = AUTH_FIELDS[key]["env"]
-        try:
-            value = os.environ[env_name]
-            return value
-        except:
-            return None
 
     def __input_valid(self, data: dict) -> bool:
         """

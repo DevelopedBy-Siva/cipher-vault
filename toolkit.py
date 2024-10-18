@@ -1,8 +1,11 @@
 import datetime
 import random
 import string
+import hashlib
+import configparser as parser
 import customtkinter as ctk
 from PIL import Image
+from typing import Union
 
 from constants import *
 
@@ -167,3 +170,46 @@ def username_valid(value: str) -> bool:
         if not (char in string.ascii_letters or char in string.digits or char == " "):
             valid = False
     return valid
+
+
+def hash_password(password: str) -> str:
+    hash_obj = hashlib.sha256(password.encode())
+    return hash_obj.hexdigest()
+
+
+def auth_info() -> Union[tuple, None]:
+    """
+    If auth info present, retrieves it
+    Returns:
+        Union[tuple, None]: Auth data (username, hash password) or None
+    """
+    try:
+        config = parser.ConfigParser()
+        config.read(AUTH_FILE["path"])
+        username = config.get("AUTH", "username")
+        password = config.get("AUTH", "password")
+        return (username, password)
+    except:
+        return None
+
+
+def save_auth_info(info: dict) -> bool:
+    """
+    Save auth info to file
+    Args:
+        info (dict): username & password
+
+    Returns:
+        bool: True if Success, else False
+    """
+    try:
+        config = parser.ConfigParser()
+        config[AUTH_FILE["header"]] = {}
+        config[AUTH_FILE["header"]]["username"] = info["username"]
+        config[AUTH_FILE["header"]]["password"] = info["password"]
+        # Write to file
+        with open(AUTH_FILE["path"], mode="w") as file:
+            config.write(file)
+        return True
+    except:
+        return False
