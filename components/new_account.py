@@ -20,16 +20,19 @@ class NewPassword(TopLevel):
 
         self.grid_columnconfigure(1, weight=1)
 
-        for idx, entry in enumerate(USER_OPTIONS["new"]["inputs"]):
-            row_idx = idx + 1
-            gap_y = (0, 30)
+        row_idx = 0
+        for key, entry in dict(USER_OPTIONS["new"]["inputs"]).items():
             show = entry.get("show", "")
 
+            row_idx += 1
             entry_label = tool.create_label(
                 self, title=f'{entry["title"]}:', font_size=13
             )
             entry_label.grid(
-                column=0, row=row_idx, pady=gap_y, sticky="w", padx=(0, 25)
+                column=0,
+                row=row_idx,
+                sticky="w",
+                padx=(0, 25),
             )
 
             entry_box_container = tool.create_container(
@@ -43,7 +46,6 @@ class NewPassword(TopLevel):
                 height=20,
             )
             entry_box.grid(column=0, row=0, sticky="nwse", padx=3, pady=3)
-            self.__entries[entry["key"]] = entry_box
             entry_box_column_span = 3
 
             if show == "*":
@@ -77,7 +79,11 @@ class NewPassword(TopLevel):
                     text_color=TEXT["dark"],
                     height=37,
                 )
-                generate_button.grid(column=3, row=row_idx, pady=gap_y, padx=(15, 0))
+                generate_button.grid(
+                    column=3,
+                    row=row_idx,
+                    padx=(15, 0),
+                )
                 entry_box_column_span = 1
 
             entry_box_container.grid(
@@ -85,31 +91,54 @@ class NewPassword(TopLevel):
                 row=row_idx,
                 columnspan=entry_box_column_span,
                 sticky="we",
-                pady=gap_y,
                 ipady=5,
             )
             entry_box_container.grid_columnconfigure(0, weight=1)
             entry_box_container.grid_rowconfigure(0, weight=1)
 
+            # Render Error
+            row_idx += 1
+            entry_error = tool.create_label(
+                self, title="", font_size=12, text_color=TEXT["error"]
+            )
+            entry_error.grid(
+                column=1,
+                row=row_idx,
+                sticky="w",
+                columnspan=3,
+                pady=(0, 8),
+                padx=(2, 0),
+            )
+            self.__entries[key] = (entry_box, entry_error)
+
         save_button = tool.create_button(
             self, command=self.__save_account, title="Save to Vault"
         )
-        save_button.grid(column=1, columnspan=2, row=5, pady=(20, 0))
+        save_button.grid(column=1, columnspan=2, row=row_idx + 1, pady=(20, 0))
 
         self.grid_columnconfigure(1, weight=1)
 
     def __save_account(self) -> None:
         is_valid = True
         data = {}
-        for key, entry in self.__entries.items():
-            value = entry.get().strip()
+        for key, item in self.__entries.items():
+            input_entry, input_error = item
+            value = input_entry.get().strip()
             # Validation
-            if key != "url" and isinstance(entry, ctk.CTkEntry):
-                if len(value) == 0:
+            if isinstance(input_entry, ctk.CTkEntry):
+                if len(value) < USER_OPTIONS["new"]["inputs"][key]["min_len"]:
                     is_valid = False
-            data[key] = value
+                    error_msg = USER_OPTIONS["new"]["inputs"][key]["error"]
+                    if isinstance(input_error, ctk.CTkLabel):
+                        input_error.configure(text=error_msg)
+                else:
+                    if isinstance(input_error, ctk.CTkLabel):
+                        input_error.configure(text="")
+            data[str(key).title()] = value
         if not is_valid:
             return
+        # Get the current Date Time
+        data["Last Modified"] = tool.current_datetime()
         self.close_window()
 
     def __toggle_password(self, entry: ctk.CTkEntry, button: ctk.CTkButton) -> None:
@@ -123,7 +152,8 @@ class NewPassword(TopLevel):
     def __generate_password(self) -> None:
         # Generates a random password
         new_password = tool.generate_password()
-        entry = self.__entries.get("password", None)
-        if isinstance(entry, ctk.CTkEntry):
+        entry, error = self.__entries.get("password", None)
+        if isinstance(entry, ctk.CTkEntry) and isinstance(error, ctk.CTkLabel):
             entry.delete(0, "end")
             entry.insert(0, new_password)
+            error.configure(text="")

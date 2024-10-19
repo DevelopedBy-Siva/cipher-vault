@@ -18,7 +18,7 @@ WINDOW = {
         "heading": "New Account Information",
         "desc": "Store and organize passwords or sensitive data with ease.",
         "width": 600,
-        "height": 490,
+        "height": 510,
     },
     "export-import": {
         "title": "Export/Import",
@@ -40,30 +40,35 @@ USER_OPTIONS = {
     "new": {
         "title": "Add Credentials",
         "icon": "add",
-        "inputs": (
-            {
+        "inputs": {
+            "account": {
                 "title": "Account",
                 "placeholder": "Enter account name",
                 "key": "account",
+                "min_len": 3,
+                "error": "Account must be at least 3 characters!",
             },
-            {
+            "url": {
                 "title": "URL (optional)",
                 "placeholder": "Enter the URL",
-                "key": "url",
+                "min_len": 0,
+                "error": "",
             },
-            {
+            "username": {
                 "title": "Email/Username",
                 "placeholder": "Enter email or username",
-                "key": "username",
+                "min_len": 3,
+                "error": "Email or Username must be at least 3 characters!",
             },
-            {
+            "password": {
                 "title": "Password",
                 "placeholder": "Enter or Create password",
                 "show": "*",
                 "command": {"title": "Generate Password"},
-                "key": "password",
+                "min_len": 3,
+                "error": "Password must be at least 3 characters!",
             },
-        ),
+        },
     },
     "exp-imp": {
         "title": "Export/Import",
@@ -92,7 +97,7 @@ TEXT = {
     "border": "#979797",
     "border-light": "#eaeaea",
     "border-light-hover": "#e1e1e1",
-    "error": "red",
+    "error": "#ff0000",
 }
 
 AUTH_FIELDS = {
