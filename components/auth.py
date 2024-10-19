@@ -1,8 +1,8 @@
 import customtkinter as ctk
 
-from constants import *
-import toolkit as tool
-import home
+import utility.toolkit as tool
+from utility.constants import *
+from components.home import Home
 
 
 class Authentication(ctk.CTkFrame):
@@ -125,7 +125,7 @@ class Authentication(ctk.CTkFrame):
         # Change APP window title
         self.__root.title(f"{account_data['username'].title()}'s {APP_NAME}")
         # Create the Home UI
-        _ = home.Home(self.__root)
+        _ = Home(self.__root)
         self.__root.update_idletasks()
 
     def __input_valid(self, data: dict) -> bool:

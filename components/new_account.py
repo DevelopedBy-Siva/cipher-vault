@@ -1,8 +1,8 @@
 import customtkinter as ctk
 
-import toolkit as tool
-from top_level import TopLevel
-from constants import *
+import utility.toolkit as tool
+from utility.constants import *
+from components.top_level import TopLevel
 
 
 class NewPassword(TopLevel):

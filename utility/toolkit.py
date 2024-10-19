@@ -7,7 +7,7 @@ import customtkinter as ctk
 from PIL import Image
 from typing import Union
 
-from constants import *
+from utility.constants import *
 
 
 def screen_size(window, width: int, height: int):

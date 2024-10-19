@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
-from constants import *
-import toolkit as tool
+import utility.toolkit as tool
+from utility.constants import WINDOW, TEXT
 
 
 class TopLevel(ctk.CTkToplevel):

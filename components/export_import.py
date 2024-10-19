@@ -1,5 +1,4 @@
-from top_level import TopLevel
-from constants import *
+from components.top_level import TopLevel
 
 
 class ExportImport(TopLevel):

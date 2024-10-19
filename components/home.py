@@ -1,11 +1,11 @@
 import customtkinter as ctk
 import pandas as pd
 
-import toolkit as tool
-from constants import *
-from new_account import NewPassword
-from export_import import ExportImport
-from table import Table
+import utility.toolkit as tool
+from utility.constants import *
+from components.new_account import NewPassword
+from components.export_import import ExportImport
+from components.table import Table
 
 
 class Home(ctk.CTkFrame):

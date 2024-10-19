@@ -2,9 +2,9 @@ import pandas as pd
 import customtkinter as ctk
 from tkinter import ttk
 
-import toolkit as tool
-from account import Account
-from constants import *
+import utility.toolkit as tool
+from utility.constants import *
+from components.account import Account
 
 
 class Table(ctk.CTkFrame):
