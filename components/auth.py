@@ -22,7 +22,7 @@ class Authentication(ctk.CTkFrame):
         title.grid(column=0, row=0, columnspan=2)
         description = tool.create_label(
             self,
-            title="Access your vault with CipherVault credentials or create a new account in seconds. Your data is encrypted and stored locally, so make sure to back it up before creating a new account, as this will replace any existing vault.",
+            title="Access your vault with CipherVault credentials or quickly set up a new account. Your data is encrypted and stored locally.",
             text_color=TEXT["light"],
             width=365,
         )
@@ -88,7 +88,7 @@ class Authentication(ctk.CTkFrame):
         # Hash the plain password
         account_data["password"] = tool.hash_password(account_data["password"])
 
-        auth_info = tool.auth_info()
+        auth_info = tool.auth_info(account_data["username"])
         # Login
         if not new_account:
             # Check account is present

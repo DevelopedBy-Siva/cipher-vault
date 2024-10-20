@@ -177,7 +177,7 @@ def hash_password(password: str) -> str:
     return hash_obj.hexdigest()
 
 
-def auth_info() -> Union[tuple, None]:
+def auth_info(account: str) -> Union[tuple, None]:
     """
     If auth info present, retrieves it
     Returns:
@@ -186,9 +186,8 @@ def auth_info() -> Union[tuple, None]:
     try:
         config = parser.ConfigParser()
         config.read(AUTH_FILE["path"])
-        username = config.get("AUTH", "username")
-        password = config.get("AUTH", "password")
-        return (username, password)
+        password = config.get(account, AUTH_FILE["hash_key"])
+        return (account, password)
     except:
         return None
 
@@ -204,11 +203,11 @@ def save_auth_info(info: dict) -> bool:
     """
     try:
         config = parser.ConfigParser()
-        config[AUTH_FILE["header"]] = {}
-        config[AUTH_FILE["header"]]["username"] = info["username"]
-        config[AUTH_FILE["header"]]["password"] = info["password"]
+        account = info["username"]
+        config[account] = {}
+        config[account][AUTH_FILE["hash_key"]] = info["password"]
         # Write to file
-        with open(AUTH_FILE["path"], mode="w") as file:
+        with open(AUTH_FILE["path"], mode="a") as file:
             config.write(file)
         return True
     except:
