@@ -2,10 +2,12 @@ import datetime
 import random
 import string
 import hashlib
+import base64
 import configparser as parser
 import customtkinter as ctk
 from PIL import Image
 from typing import Union
+from cryptography.fernet import Fernet
 
 from utility.constants import *
 
@@ -187,7 +189,8 @@ def auth_info(account: str) -> Union[tuple, None]:
         config = parser.ConfigParser()
         config.read(AUTH_FILE["path"])
         password = config.get(account, AUTH_FILE["hash_key"])
-        return (account, password)
+        salt = config.get(account, AUTH_FILE["salt"])
+        return (account, password, salt)
     except:
         return None
 
@@ -204,11 +207,42 @@ def save_auth_info(info: dict) -> bool:
     try:
         config = parser.ConfigParser()
         account = info["username"]
+        password = info["password"]
         config[account] = {}
-        config[account][AUTH_FILE["hash_key"]] = info["password"]
+        config[account][AUTH_FILE["hash_key"]] = hash_password(password)
+        config[account][AUTH_FILE["salt"]] = generate_salt(password)
         # Write to file
         with open(AUTH_FILE["path"], mode="a") as file:
             config.write(file)
         return True
-    except:
+    except Exception as e:
+        print(e)
         return False
+
+
+def generate_salt(password: str) -> str:
+    """
+    Generates a random string which is used in encrypting and decrypting data
+    """
+    salt_len = 32 - len(password)
+    characters = string.ascii_lowercase + string.digits
+    salt = "".join(random.choices(characters, k=salt_len))
+    return salt
+
+
+def encrypt(key: str, message: str):
+    """_summary_
+    Encrypt the data using the key
+    """
+    key_bytes = base64.urlsafe_b64encode((key).encode())
+    fernet = Fernet(key_bytes)
+    return fernet.encrypt(message.encode())
+
+
+def decrypt(key: str, message: str):
+    """_summary_
+    Decrypt the data using the key
+    """
+    key_bytes = base64.urlsafe_b64encode((key).encode())
+    fernet = Fernet(key_bytes)
+    return fernet.decrypt(message).decode()

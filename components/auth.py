@@ -3,6 +3,7 @@ import customtkinter as ctk
 import utility.toolkit as tool
 from utility.constants import *
 from components.home import Home
+from components.data_store import DataStore
 
 
 class Authentication(ctk.CTkFrame):
@@ -85,8 +86,6 @@ class Authentication(ctk.CTkFrame):
             return
 
         account_data["username"] = account_data["username"].lower()
-        # Hash the plain password
-        account_data["password"] = tool.hash_password(account_data["password"])
 
         auth_info = tool.auth_info(account_data["username"])
         # Login
@@ -94,7 +93,8 @@ class Authentication(ctk.CTkFrame):
             # Check account is present
             if auth_info != None and (auth_info[0] == account_data["username"]):
                 # validate password
-                if auth_info[1] != account_data["password"]:
+                hashed_password = tool.hash_password(account_data["password"])
+                if auth_info[1] != hashed_password:
                     error_msg = AUTH_FIELDS["password"]["error"]["incorrect"]
                     self.__entries["password"][1].configure(text=error_msg)
                     return
@@ -119,6 +119,14 @@ class Authentication(ctk.CTkFrame):
                     error_msg = AUTH_FIELDS["username"]["error"]["unknown"]
                     self.__entries["username"][1].configure(text=error_msg)
                     return
+
+        # Store user data
+        if auth_info:
+            DataStore.initialize_account(
+                username=auth_info[0],
+                password=account_data["password"],
+                salt=auth_info[2],
+            )
 
         self.destroy()  # Destroy the auth widget
 

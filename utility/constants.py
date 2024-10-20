@@ -2,7 +2,8 @@ APP_NAME = "CipherVault"
 
 AUTH_FILE = {
     "path": "./data/config.ini",
-    "hash_key": "DATA_SIGNATURE",
+    "hash_key": "SIGNATURE",
+    "salt": "DATA_TOKEN",
 }
 
 GEN_PASS_LENGTH = 12
