@@ -1,7 +1,6 @@
 import pandas as pd
 
 import utility.toolkit as tool
-from utility.constants import DATA_PATH
 
 _MODAL = {"Account": [], "Username": [], "Password": [], "Last Modified": []}
 
@@ -12,6 +11,7 @@ class DataStore:
     username = ""
     password = ""
     cipher_key = ""
+    data_file_name = ""
 
     # All stored accounts
     account_df = pd.DataFrame(_MODAL)
@@ -24,6 +24,7 @@ class DataStore:
         DataStore.username = username
         DataStore.password = password
         DataStore.cipher_key = password + salt
+        DataStore.data_file_name = f"{username}_{salt}"
 
     @staticmethod
     def fetch_accounts() -> None:
@@ -31,10 +32,11 @@ class DataStore:
         Get all saved accounts
         """
         try:
-            data_frame = pd.read_csv(DATA_PATH)
-            data_frame["Password"] = data_frame["Password"].apply(
-                lambda val: tool.decrypt(DataStore.cipher_key, val)
+            decrypted_data = tool.decrypt(
+                DataStore.cipher_key, DataStore.data_file_name
             )
+            data_frame = pd.read_csv(decrypted_data)
             DataStore.account_df = data_frame
         except:
+            # TODO
             return

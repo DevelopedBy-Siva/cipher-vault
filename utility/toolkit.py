@@ -3,11 +3,12 @@ import random
 import string
 import hashlib
 import base64
+import io
 import configparser as parser
 import customtkinter as ctk
+import cryptography.fernet as crypto
 from PIL import Image
 from typing import Union
-from cryptography.fernet import Fernet
 
 from utility.constants import *
 
@@ -235,14 +236,29 @@ def encrypt(key: str, message: str):
     Encrypt the data using the key
     """
     key_bytes = base64.urlsafe_b64encode((key).encode())
-    fernet = Fernet(key_bytes)
+    fernet = crypto.Fernet(key_bytes)
     return fernet.encrypt(message.encode())
 
 
-def decrypt(key: str, message: str):
+def decrypt(key: str, file_name: str) -> io.BytesIO:
     """_summary_
     Decrypt the data using the key
     """
-    key_bytes = base64.urlsafe_b64encode((key).encode())
-    fernet = Fernet(key_bytes)
-    return fernet.decrypt(message).decode()
+    try:
+        key_bytes = base64.urlsafe_b64encode((key).encode())
+        fernet = crypto.Fernet(key_bytes)
+        # opening the encrypted file
+        with open(f"data/{file_name}", "rb") as enc_file:
+            encrypted = enc_file.read()
+        # decrypting the file
+        decrypted = fernet.decrypt(encrypted)
+        return io.BytesIO(decrypted)
+    except FileNotFoundError as ex:
+        # TODO
+        raise ex
+    except crypto.InvalidToken as ex:
+        # TODO
+        raise ex
+    except Exception as ex:
+        # TODO
+        raise ex
