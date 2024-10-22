@@ -30,9 +30,10 @@ class Table(ctk.CTkFrame):
         # Fetch Data
         error = DataStore.fetch_accounts()
         if not error:
-            self.__content()
-        elif DataStore.account_df.size == 0:
-            self.__notify("No accounts stored in your vault.")
+            if DataStore.account_df.size == 0:
+                self.__notify("No accounts stored in your vault.")
+            else:
+                self.__content()
         else:
             self.__notify(error)
 

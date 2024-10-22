@@ -46,6 +46,7 @@ USER_OPTIONS = {
                 "key": "account",
                 "min_len": 3,
                 "error": "Account must be at least 3 characters!",
+                "save_failed": "Failed to save the account. Please try again.",
             },
             "url": {
                 "title": "URL (optional)",

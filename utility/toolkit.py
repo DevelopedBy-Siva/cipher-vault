@@ -4,6 +4,8 @@ import string
 import hashlib
 import base64
 import io
+import os
+import pandas as pd
 import configparser as parser
 import customtkinter as ctk
 import cryptography.fernet as crypto
@@ -212,12 +214,15 @@ def save_auth_info(info: dict) -> bool:
         config[account] = {}
         config[account][AUTH_FILE["hash_key"]] = hash_password(password)
         config[account][AUTH_FILE["salt"]] = generate_salt(password)
+
+        # Check dir exists, else create a new one
+        os.makedirs(os.path.dirname(AUTH_FILE["path"]), exist_ok=True)
+
         # Write to file
         with open(AUTH_FILE["path"], mode="a") as file:
             config.write(file)
         return True
-    except Exception as e:
-        print(e)
+    except Exception:
         return False
 
 
@@ -231,17 +236,24 @@ def generate_salt(password: str) -> str:
     return salt
 
 
-def encrypt(key: str, message: str):
-    """_summary_
+def encrypt(key: str, file_name: str, data: pd.DataFrame) -> None:
+    """
     Encrypt the data using the key
     """
-    key_bytes = base64.urlsafe_b64encode((key).encode())
-    fernet = crypto.Fernet(key_bytes)
-    return fernet.encrypt(message.encode())
+    try:
+        key_bytes = base64.urlsafe_b64encode((key).encode())
+        fernet = crypto.Fernet(key_bytes)
+        data_byte = data.to_csv(index=False).encode()
+        encrypted = fernet.encrypt(data_byte)
+        # # writing the encrypted data
+        with open(f"data/{file_name}", "wb") as encrypted_file:
+            encrypted_file.write(encrypted)
+    except Exception as ex:
+        raise ex
 
 
 def decrypt(key: str, file_name: str) -> io.BytesIO:
-    """_summary_
+    """
     Decrypt the data using the key
     """
     try:

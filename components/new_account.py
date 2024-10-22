@@ -3,6 +3,7 @@ import customtkinter as ctk
 import utility.toolkit as tool
 from utility.constants import *
 from components.top_level import TopLevel
+from components.data_store import DataStore
 
 
 class NewPassword(TopLevel):
@@ -139,7 +140,17 @@ class NewPassword(TopLevel):
             return
         # Get the current Date Time
         data["Last Modified"] = tool.current_datetime()
-        self.close_window()
+        # Add data
+        success = DataStore.add_account(data)
+        if success:
+            # TODO: Refresh UI
+            self.close_window()
+        else:
+            # Failed to save data
+            error_msg = USER_OPTIONS["new"]["inputs"]["account"]["save_failed"]
+            unknown_error = self.__entries["account"][1]
+            if isinstance(unknown_error, ctk.CTkLabel):
+                unknown_error.configure(text=error_msg)
 
     def __toggle_password(self, entry: ctk.CTkEntry, button: ctk.CTkButton) -> None:
         if entry.cget("show") == "":
