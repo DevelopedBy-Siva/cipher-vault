@@ -13,7 +13,7 @@ class Table(ctk.CTkFrame):
         self.__root = root
         self.__parent = parent
         self.__columns = columns
-        self.__tree = None
+        self.tree = None
         super().__init__(self.__parent, fg_color=WINDOW["bg"], bg_color=WINDOW["bg"])
         self.__style()
         self.__render_data()  # render rows and columns
@@ -78,31 +78,42 @@ class Table(ctk.CTkFrame):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        self.__tree = ttk.Treeview(container, columns=self.__columns, show="")
-        self.__tree.grid(column=0, row=0, sticky="news")
+        self.tree = ttk.Treeview(container, columns=self.__columns, show="")
+        self.tree.grid(column=0, row=0, sticky="news")
 
         # Handle row selection
-        self.__tree.bind("<<TreeviewSelect>>", self.__open_account)
+        self.tree.bind("<<TreeviewSelect>>", self.__open_account)
 
         # Handle row hover
-        self.__tree.tag_configure("highlight", background=TABLE["bg-hover"])
-        self.__tree.bind("<Motion>", self.__highlight_row)
+        self.tree.tag_configure("highlight", background=TABLE["bg-hover"])
+        self.tree.bind("<Motion>", self.__highlight_row)
 
         # Create columns
         for col in self.__columns:
-            self.__tree.column(col, anchor="w")
+            self.tree.column(col, anchor="w")
 
         # Insert data to columns
-        data = DataStore.account_df[list(self.__columns)]
+        self.__insert_data()
+
+    def __insert_data(self) -> None:
+        """
+        Insert each data
+        """
+        data = DataStore.select_and_sort(list(self.__columns))
         for idx, (_, row) in enumerate(data.iterrows()):
             row_tag = "odd_row"
             if idx % 2 == 0:
                 row_tag = "even_row"
-            self.__tree.insert(
-                "", "end", values=[f"   {val}".title() for val in row], tags=(row_tag,)
-            )
-            self.__tree.tag_configure("odd_row", background=TABLE["odd"])
-            self.__tree.tag_configure("even_row", background=TABLE["even"])
+
+            if self.tree:
+                self.tree.insert(
+                    "",
+                    "end",
+                    values=[f"   {val}".title() for val in row],
+                    tags=(row_tag,),
+                )
+                self.tree.tag_configure("odd_row", background=TABLE["odd"])
+                self.tree.tag_configure("even_row", background=TABLE["even"])
 
     def __style(self) -> None:
         """
@@ -127,8 +138,8 @@ class Table(ctk.CTkFrame):
         """_summary_
         Render the account details when a selection is made
         """
-        if self.__tree and self.__tree.selection():
-            Account(self.__root, self.__tree)
+        if self.tree and self.tree.selection():
+            Account(self.__root, self.tree)
 
     def __highlight_row(self, event) -> None:
         """
@@ -145,3 +156,11 @@ class Table(ctk.CTkFrame):
         """
         error = tool.create_label(self, title=error_msg, text_color=TEXT["light"])
         error.grid(column=0, row=1, sticky="n", pady=(25, 0))
+
+    def refresh(self) -> None:
+        """
+        Refresh data
+        """
+        if self.tree:
+            self.tree.delete(*self.tree.get_children())
+        self.__insert_data()

@@ -70,3 +70,10 @@ class DataStore:
             return True
         except:
             return False
+
+    @staticmethod
+    def select_and_sort(columns: list, ascending=False) -> pd.DataFrame:
+        df = DataStore.account_df[columns].sort_values(
+            by=["Last Modified"], ascending=ascending
+        )
+        return df

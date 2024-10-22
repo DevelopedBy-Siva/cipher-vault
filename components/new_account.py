@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from typing import Callable
 
 import utility.toolkit as tool
 from utility.constants import *
@@ -6,16 +7,17 @@ from components.top_level import TopLevel
 from components.data_store import DataStore
 
 
-class NewPassword(TopLevel):
+class NewAccount(TopLevel):
 
     __KEY = "new-password"
     __password_hide_ico = tool.ctk_image("password-hide", (16, 16))
     __password_show_ico = tool.ctk_image("password-show", (16, 16))
 
-    def __init__(self, parent) -> None:
+    def __init__(self, parent, refresh_table: Callable) -> None:
         super().__init__(parent, key=self.__KEY, grid_y_size=4)
         self.__entries = {}
         self.__user_input()
+        self.__refresh_table = refresh_table
 
     def __user_input(self) -> None:
 
@@ -143,7 +145,7 @@ class NewPassword(TopLevel):
         # Add data
         success = DataStore.add_account(data)
         if success:
-            # TODO: Refresh UI
+            self.__refresh_table()
             self.close_window()
         else:
             # Failed to save data

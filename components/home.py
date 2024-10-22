@@ -2,7 +2,7 @@ import customtkinter as ctk
 
 import utility.toolkit as tool
 from utility.constants import *
-from components.new_account import NewPassword
+from components.new_account import NewAccount
 from components.export_import import ExportImport
 from components.table import Table
 
@@ -65,7 +65,7 @@ class Home(ctk.CTkFrame):
         table_container = tool.create_container(self, bg="red")
         table_container.grid(column=0, row=2, sticky="news", pady=(40, 0))
 
-        _ = Table(self.__root, table_container, self.__DATA_COLUMNS)
+        self.table = Table(self.__root, table_container, self.__DATA_COLUMNS)
 
         table_container.grid_columnconfigure(0, weight=1)
         table_container.grid_rowconfigure(0, weight=1)
@@ -73,7 +73,7 @@ class Home(ctk.CTkFrame):
 
     def __navigate_to(self, key: str) -> None:
         if key == "new":
-            _ = NewPassword(self.__root)
+            _ = NewAccount(self.__root, self.table.refresh)
         elif key == "exp-imp":
             _ = ExportImport(self.__root)
         else:
