@@ -1,12 +1,10 @@
 import customtkinter as ctk
-import pandas as pd
 
 import utility.toolkit as tool
 from utility.constants import *
 from components.new_account import NewPassword
 from components.export_import import ExportImport
 from components.table import Table
-from components.data_store import DataStore
 
 
 class Home(ctk.CTkFrame):
@@ -17,9 +15,6 @@ class Home(ctk.CTkFrame):
         self.__root = root
         super().__init__(self.__root)
         self.__create_header()
-        # Fetch Data
-        DataStore.fetch_accounts()
-        self.__table = None
         self.__show_account_details()
         self.configure(bg_color=WINDOW["bg"], fg_color=WINDOW["bg"])
         self.grid(column=0, row=0, sticky="news", padx=50, pady=30)
@@ -70,9 +65,7 @@ class Home(ctk.CTkFrame):
         table_container = tool.create_container(self, bg="red")
         table_container.grid(column=0, row=2, sticky="news", pady=(40, 0))
 
-        self.__table = Table(
-            self.__root, table_container, self.__DATA_COLUMNS, DataStore.account_df
-        )
+        _ = Table(self.__root, table_container, self.__DATA_COLUMNS)
 
         table_container.grid_columnconfigure(0, weight=1)
         table_container.grid_rowconfigure(0, weight=1)

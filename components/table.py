@@ -1,29 +1,45 @@
-import pandas as pd
 import customtkinter as ctk
 from tkinter import ttk
 
 import utility.toolkit as tool
 from utility.constants import *
 from components.account import Account
+from components.data_store import DataStore
 
 
 class Table(ctk.CTkFrame):
 
-    def __init__(self, root: ctk.CTk, parent, columns: tuple, data: pd.DataFrame):
+    def __init__(self, root: ctk.CTk, parent, columns: tuple):
         self.__root = root
         self.__parent = parent
         self.__columns = columns
-        self.__data = data
         self.__tree = None
         super().__init__(self.__parent, fg_color=WINDOW["bg"], bg_color=WINDOW["bg"])
         self.__style()
-        self.__heading()
-        self.__content()
+        self.__render_data()  # render rows and columns
         self.grid(column=0, row=0, sticky="news")
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
+    def __render_data(self):
+        """
+        Render rows and columns
+        """
+        # column names
+        self.__heading()
+        # Fetch Data
+        error = DataStore.fetch_accounts()
+        if not error:
+            self.__content()
+        elif DataStore.account_df.size == 0:
+            self.__notify("No accounts stored in your vault.")
+        else:
+            self.__notify(error)
+
     def __heading(self) -> None:
+        """
+        Table columns
+        """
         heading_container = tool.create_container(self, bg=TABLE["header"])
         heading_container.grid(column=0, row=0, sticky="ew")
         heading_container.grid_columnconfigure(0, weight=1)
@@ -45,6 +61,9 @@ class Table(ctk.CTkFrame):
             wrapper.grid_columnconfigure(idx, weight=1)
 
     def __content(self) -> None:
+        """
+        Table rows
+        """
         container = ctk.CTkScrollableFrame(
             self,
             bg_color="transparent",
@@ -73,7 +92,7 @@ class Table(ctk.CTkFrame):
             self.__tree.column(col, anchor="w")
 
         # Insert data to columns
-        data = self.__data[list(self.__columns)]
+        data = DataStore.account_df[list(self.__columns)]
         for idx, (_, row) in enumerate(data.iterrows()):
             row_tag = "odd_row"
             if idx % 2 == 0:
@@ -85,6 +104,9 @@ class Table(ctk.CTkFrame):
             self.__tree.tag_configure("even_row", background=TABLE["even"])
 
     def __style(self) -> None:
+        """
+        Custom table styles
+        """
         style = ttk.Style()
         style.configure(
             "Treeview",
@@ -101,13 +123,24 @@ class Table(ctk.CTkFrame):
         )
 
     def __open_account(self, _) -> None:
-        # Render the account details when a selection is made
+        """_summary_
+        Render the account details when a selection is made
+        """
         if self.__tree and self.__tree.selection():
             Account(self.__root, self.__tree)
 
     def __highlight_row(self, event) -> None:
-        # Handle table row hover event
+        """
+        Handle table row hover event
+        """
         tree = event.widget
         item = tree.identify_row(event.y)
         tree.tk.call(tree, "tag", "remove", "highlight")
         tree.tk.call(tree, "tag", "add", "highlight", item)
+
+    def __notify(self, error_msg) -> None:
+        """
+        Render error (if any)
+        """
+        error = tool.create_label(self, title=error_msg, text_color=TEXT["light"])
+        error.grid(column=0, row=1, sticky="n", pady=(25, 0))

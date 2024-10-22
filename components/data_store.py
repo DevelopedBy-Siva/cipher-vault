@@ -1,4 +1,6 @@
 import pandas as pd
+import cryptography.fernet as crypto
+from typing import Union
 
 import utility.toolkit as tool
 
@@ -27,7 +29,7 @@ class DataStore:
         DataStore.data_file_name = f"{username}_{salt}"
 
     @staticmethod
-    def fetch_accounts() -> None:
+    def fetch_accounts() -> Union[None, str]:
         """
         Get all saved accounts
         """
@@ -37,6 +39,9 @@ class DataStore:
             )
             data_frame = pd.read_csv(decrypted_data)
             DataStore.account_df = data_frame
-        except:
-            # TODO
-            return
+        except FileNotFoundError:
+            return None
+        except crypto.InvalidToken:
+            return "Unable to retrieve accounts at the moment.\nThis may be due to mismatched account credentials or possible file corruption. Please restart the application and try again."
+        except Exception:
+            return "Something went wrong. Please restart the application and try again."

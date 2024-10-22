@@ -253,12 +253,5 @@ def decrypt(key: str, file_name: str) -> io.BytesIO:
         # decrypting the file
         decrypted = fernet.decrypt(encrypted)
         return io.BytesIO(decrypted)
-    except FileNotFoundError as ex:
-        # TODO
-        raise ex
-    except crypto.InvalidToken as ex:
-        # TODO
-        raise ex
     except Exception as ex:
-        # TODO
         raise ex
