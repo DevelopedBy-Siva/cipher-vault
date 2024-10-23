@@ -23,8 +23,8 @@ WINDOW = {
         "title": "Export/Import",
         "heading": "Backup & Restore Data",
         "desc": "Export your saved entries for safekeeping or import from a backup file.",
-        "width": 540,
-        "height": 460,
+        "width": 580,
+        "height": 470,
     },
     "account-details": {
         "title": "Account Snapshot",
@@ -98,6 +98,7 @@ TEXT = {
     "border-light": "#eaeaea",
     "border-light-hover": "#e1e1e1",
     "error": "#ff0000",
+    "success": "#00b300",
 }
 
 AUTH_FIELDS = {

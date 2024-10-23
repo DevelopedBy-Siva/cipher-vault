@@ -75,6 +75,6 @@ class Home(ctk.CTkFrame):
         if key == "new":
             _ = NewAccount(self.__root, self.table.refresh)
         elif key == "exp-imp":
-            _ = ExportImport(self.__root)
+            _ = ExportImport(self.__root, self.table.refresh)
         else:
             pass

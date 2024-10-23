@@ -75,6 +75,7 @@ def create_label(master, **kwargs) -> ctk.CTkLabel:
     height = kwargs.get("height", 25)
     bg = kwargs.get("bg", TEXT["bg"])
     width = kwargs.get("width", 0)
+    justify = kwargs.get("justify", "left")
 
     label = ctk.CTkLabel(
         master,
@@ -87,6 +88,7 @@ def create_label(master, **kwargs) -> ctk.CTkLabel:
         height=height,
         width=width,
         wraplength=width,
+        justify=justify,
     )
     return label
 
@@ -252,16 +254,19 @@ def encrypt(key: str, file_name: str, data: pd.DataFrame) -> None:
         raise ex
 
 
-def decrypt(key: str, file_name: str) -> io.BytesIO:
+def decrypt(key: str, file_name: str, encrypted_data=None) -> io.BytesIO:
     """
     Decrypt the data using the key
     """
     try:
         key_bytes = base64.urlsafe_b64encode((key).encode())
         fernet = crypto.Fernet(key_bytes)
-        # opening the encrypted file
-        with open(f"data/{file_name}", "rb") as enc_file:
-            encrypted = enc_file.read()
+        if encrypted_data:
+            encrypted = encrypted_data
+        else:
+            # opening the encrypted file
+            with open(f"data/{file_name}", "rb") as enc_file:
+                encrypted = enc_file.read()
         # decrypting the file
         decrypted = fernet.decrypt(encrypted)
         return io.BytesIO(decrypted)

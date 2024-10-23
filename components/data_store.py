@@ -4,7 +4,14 @@ from typing import Union
 
 import utility.toolkit as tool
 
-_MODAL = {"Account": [], "Username": [], "Url": [], "Password": [], "Last Modified": []}
+_MODAL = {
+    "Account": [],
+    "Username": [],
+    "Url": [],
+    "Password": [],
+    "Last Modified": [],
+    "Imported On": [],
+}
 
 
 class DataStore:
@@ -26,7 +33,7 @@ class DataStore:
         DataStore.username = username
         DataStore.password = password
         DataStore.cipher_key = password + salt
-        DataStore.data_file_name = f"{username}_{salt}"
+        DataStore.data_file_name = f"{username}__{salt}__.bytes"
 
     @staticmethod
     def fetch_accounts() -> Union[None, str]:
@@ -64,6 +71,7 @@ class DataStore:
                 new_data[key] = [val]
             new_df = pd.DataFrame(new_data)
             DataStore.account_df = pd.concat([DataStore.account_df, new_df])
+            DataStore.account_df.reset_index(drop=True, inplace=True)
             tool.encrypt(
                 DataStore.cipher_key, DataStore.data_file_name, DataStore.account_df
             )
@@ -77,3 +85,11 @@ class DataStore:
             by=["Last Modified"], ascending=ascending
         )
         return df
+
+    @staticmethod
+    def merge_datastore(new_datastore: pd.DataFrame) -> None:
+        DataStore.account_df = pd.concat([DataStore.account_df, new_datastore])
+        DataStore.account_df.reset_index(drop=True, inplace=True)
+        tool.encrypt(
+            DataStore.cipher_key, DataStore.data_file_name, DataStore.account_df
+        )

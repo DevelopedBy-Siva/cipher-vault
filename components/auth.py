@@ -26,6 +26,7 @@ class Authentication(ctk.CTkFrame):
             title="Access your vault with CipherVault credentials or quickly set up a new account. Your data is encrypted and stored locally.",
             text_color=TEXT["light"],
             width=365,
+            justify="center",
         )
         description.grid(column=0, row=1, pady=(10, 20), columnspan=2)
 
