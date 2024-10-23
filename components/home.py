@@ -9,8 +9,6 @@ from components.table import Table
 
 class Home(ctk.CTkFrame):
 
-    __DATA_COLUMNS = ("Account", "Username", "Last Modified")
-
     def __init__(self, root: ctk.CTk) -> None:
         self.__root = root
         super().__init__(self.__root)
@@ -65,7 +63,7 @@ class Home(ctk.CTkFrame):
         table_container = tool.create_container(self, bg="red")
         table_container.grid(column=0, row=2, sticky="news", pady=(40, 0))
 
-        self.table = Table(self.__root, table_container, self.__DATA_COLUMNS)
+        self.table = Table(self.__root, table_container)
 
         table_container.grid_columnconfigure(0, weight=1)
         table_container.grid_rowconfigure(0, weight=1)

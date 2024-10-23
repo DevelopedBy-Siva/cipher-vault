@@ -86,6 +86,7 @@ BUTTON = {
     "icon": {
         "password-show": "./static/password-show.png",
         "password-hide": "./static/password-hide.png",
+        "edit": "./static/edit.png",
     },
 }
 
