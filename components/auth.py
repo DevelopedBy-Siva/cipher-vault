@@ -110,18 +110,15 @@ class Authentication(ctk.CTkFrame):
                 error_msg = AUTH_FIELDS["username"]["error"]["present"]
                 self.__entries["username"][1].configure(text=error_msg)
                 return
-            # Create Account
             else:
-                if tool.save_auth_info(account_data):
-                    # Account created
-                    self.__cleanup()
-                else:
-                    # Something went wrong while saving files
+                # Create Account
+                if not tool.save_auth_info(account_data):
                     error_msg = AUTH_FIELDS["username"]["error"]["unknown"]
                     self.__entries["username"][1].configure(text=error_msg)
                     return
 
-        # Store user data
+        # Get account info
+        auth_info = tool.auth_info(account_data["username"])
         if auth_info:
             DataStore.initialize_account(
                 username=auth_info[0],
@@ -166,7 +163,3 @@ class Authentication(ctk.CTkFrame):
             else:
                 self.__entries[key][1].configure(text="")
         return is_valid
-
-    def __cleanup(self):
-        # TODO
-        pass
