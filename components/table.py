@@ -43,7 +43,7 @@ class Table(ctk.CTkFrame):
         container = tool.create_container(
             column_wrapper, fg=BUTTON["bg-light"], bg=BUTTON["bg-light"]
         )
-        container.grid(column=0, row=0, padx=(5, 104), sticky="we")
+        container.grid(column=0, row=0, padx=(5, 110), sticky="we")
         for idx, col in enumerate(self.__DATA_COLUMNS):
             column = tool.create_label(
                 container, title=col, font_size=12, bg="transparent"
@@ -101,10 +101,10 @@ class Table(ctk.CTkFrame):
                 width=30,
                 bg=BUTTON["color"],
                 hover_bg=BUTTON["color"],
-                icon=tool.ctk_image("edit", (18, 18)),
+                icon=tool.ctk_image("open", (18, 18)),
                 command=lambda col_no=col_no: self.__open_account(None, col_no),
             )
-            edit_btn.grid(column=3, row=0, sticky="e", padx=(20, 30))
+            edit_btn.grid(column=3, row=0, sticky="e", padx=(20, 40))
             # Draw a border line after every row
             self.__draw_border_bottom(each_row_container)
 

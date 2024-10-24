@@ -157,7 +157,7 @@ class ExportImport(TopLevel):
         )
         self.__export_notify.grid(column=1, row=2, sticky="w", padx=(15, 0), pady=15)
 
-        export_container.grid(column=0, row=2, sticky="we", pady=(25, 0))
+        export_container.grid(column=0, row=2, sticky="we", pady=(15, 0))
         export_container.grid_columnconfigure(1, weight=1)
 
     def __export_action(self):
