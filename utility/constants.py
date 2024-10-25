@@ -30,8 +30,8 @@ WINDOW = {
         "title": "Account Snapshot",
         "heading": "Account Snapshot",
         "desc": "Manage your stored credentials—view, modify, or remove them from the vault.",
-        "width": 540,
-        "height": 460,
+        "width": 620,
+        "height": 590,
     },
 }
 
@@ -87,7 +87,7 @@ BUTTON = {
         "password-show": "./static/password-show.png",
         "password-hide": "./static/password-hide.png",
         "open": "./static/open.png",
-        "copy": "./static/edit.png",
+        "copy": "./static/copy.png",
     },
 }
 
@@ -100,6 +100,7 @@ TEXT = {
     "border-light": "#eaeaea",
     "border-light-hover": "#e1e1e1",
     "error": "#ff0000",
+    "error_light": "#FF3232",
     "success": "#00b300",
 }
 
@@ -138,4 +139,35 @@ TABLE = {
     "bg-hover": "#f1f8fb",
     "odd": "#f6f6f8",
     "even": "#fff",
+}
+
+ACCOUNT_EDIT = {
+    "Account": {
+        "title": "Account",
+        "placeholder": "Enter account name",
+        "editable": True,
+    },
+    "Username": {
+        "title": "Username",
+        "placeholder": "Enter account username",
+        "editable": True,
+    },
+    "Url": {
+        "title": "URL (optional)",
+        "placeholder": "Enter account URL",
+        "editable": True,
+    },
+    "Password": {
+        "title": "Password",
+        "placeholder": "Enter account password",
+        "editable": True,
+    },
+    "Last Modified": {
+        "title": "Last Modified",
+        "editable": False,
+    },
+    "Imported On": {
+        "title": "Imported On",
+        "editable": False,
+    },
 }

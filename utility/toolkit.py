@@ -71,6 +71,7 @@ def create_label(master, **kwargs) -> ctk.CTkLabel:
 
     text = kwargs.get("title", "Unknown")
     font_size = kwargs.get("font_size", 12)
+    font_weight = kwargs.get("font_weight", "normal")
     text_color = kwargs.get("text_color", TEXT["dark"])
     height = kwargs.get("height", 25)
     bg = kwargs.get("bg", TEXT["bg"])
@@ -81,7 +82,7 @@ def create_label(master, **kwargs) -> ctk.CTkLabel:
         master,
         text=text,
         text_color=text_color,
-        font=(TEXT["font"], font_size),
+        font=(TEXT["font"], font_size, font_weight),
         fg_color=bg,
         bg_color=bg,
         anchor="w",
