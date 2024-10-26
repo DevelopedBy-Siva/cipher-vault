@@ -1,13 +1,16 @@
 import customtkinter as ctk
+import tkinter as tk
 
 import utility.toolkit as tool
 from components.auth import Authentication
-from utility.constants import APP_NAME, WINDOW
+from utility.constants import WINDOW, APP_NAME, APP_ICON
 
 
 def main():
     # Init the window
     root = ctk.CTk()
+    # Create App Icon
+    root.iconphoto(False, tk.PhotoImage(file=APP_ICON))
     root.title(APP_NAME)
     root.config(background=WINDOW["bg"])
 

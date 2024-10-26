@@ -1,4 +1,5 @@
 APP_NAME = "CipherVault"
+APP_ICON = "./static/logo.png"
 
 AUTH_FILE = {
     "path": "./data/config.ini",
