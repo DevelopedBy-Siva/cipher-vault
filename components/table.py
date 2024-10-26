@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import pandas as pd
 
 import utility.toolkit as tool
 from utility.constants import *
@@ -74,18 +75,20 @@ class Table(ctk.CTkFrame):
         self.__content_container.grid_columnconfigure(0, weight=1)
         self.__content_container.grid_rowconfigure(1, weight=1)
 
-        # Retrieve and render data
-        data_frame = DataStore.select_and_sort(list(self.__DATA_COLUMNS))
-        for col_no, row in data_frame.iterrows():
+        # Filter and render data
+        data_frame = DataStore.select_and_sort()
+        for row_no, (_, row) in enumerate(data_frame.iterrows()):
             each_row_container = tool.create_container(
                 self.__content_container, bg="transparent"
             )
-            each_row_container.grid(column=0, row=col_no, sticky="ew")
+            each_row_container.grid(column=0, row=row_no, sticky="ew")
             # Render each row
             for idx, col_name in enumerate(self.__DATA_COLUMNS):
+
+                col_value = str(row[col_name]).capitalize()
                 data_column = tool.create_label(
                     each_row_container,
-                    title=row[col_name].title(),
+                    title=col_value,
                     font_size=12,
                     bg="transparent",
                 )
@@ -94,17 +97,17 @@ class Table(ctk.CTkFrame):
                     idx, weight=1, uniform="content"
                 )
 
-            # Create a edit button for reach row
-            edit_btn = tool.create_button(
+            # open button for each row
+            open_btn = tool.create_button(
                 each_row_container,
                 title="",
                 width=30,
                 bg=BUTTON["color"],
                 hover_bg=BUTTON["color"],
                 icon=tool.ctk_image("open", (18, 18)),
-                command=lambda col_no=col_no: self.__open_account(None, col_no),
+                command=lambda data=row: self.__open_account(data),
             )
-            edit_btn.grid(column=3, row=0, sticky="e", padx=(20, 40))
+            open_btn.grid(column=3, row=0, sticky="e", padx=(20, 40))
             # Draw a border line after every row
             self.__draw_border_bottom(each_row_container)
 
@@ -132,8 +135,8 @@ class Table(ctk.CTkFrame):
             column=0, row=1, columnspan=len(self.__DATA_COLUMNS) + 1, sticky="we"
         )
 
-    def __open_account(self, _, index) -> None:
+    def __open_account(self, data: pd.Series) -> None:
         """_summary_
         Render the account details when a selection is made
         """
-        Account(self.__root, index, self.refresh)
+        Account(self.__root, data, self.refresh)

@@ -30,8 +30,8 @@ WINDOW = {
         "title": "Account Snapshot",
         "heading": "Account Snapshot",
         "desc": "Manage your stored credentials—view, modify, or remove them from the vault.",
-        "width": 620,
-        "height": 590,
+        "width": 520,
+        "height": 550,
     },
 }
 
@@ -94,6 +94,7 @@ BUTTON = {
 TEXT = {
     "dark": "#191919",
     "light": "#979797",
+    "light_2": "#696969",
     "font": "Showcard Gothic",
     "bg": "#fff",
     "border": "#979797",
@@ -146,21 +147,30 @@ ACCOUNT_EDIT = {
         "title": "Account",
         "placeholder": "Enter account name",
         "editable": True,
+        "min_len": 3,
+        "error": "Account must be at least 3 characters!",
+        "save_failed": "Failed to update the changes. Please try again.",
     },
     "Username": {
-        "title": "Username",
-        "placeholder": "Enter account username",
+        "title": "Email or Username",
+        "placeholder": "Enter account email or username",
         "editable": True,
+        "min_len": 3,
+        "error": "Email or Username must be at least 3 characters!",
     },
     "Url": {
         "title": "URL (optional)",
         "placeholder": "Enter account URL",
         "editable": True,
+        "min_len": 0,
+        "error": "",
     },
     "Password": {
         "title": "Password",
         "placeholder": "Enter account password",
         "editable": True,
+        "min_len": 3,
+        "error": "Password must be at least 3 characters!",
     },
     "Last Modified": {
         "title": "Last Modified",

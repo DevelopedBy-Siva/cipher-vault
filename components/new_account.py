@@ -1,3 +1,4 @@
+import uuid
 import customtkinter as ctk
 from typing import Callable
 
@@ -29,7 +30,10 @@ class NewAccount(TopLevel):
 
             row_idx += 1
             entry_label = tool.create_label(
-                self, title=f'{entry["title"]}:', font_size=13
+                self,
+                title=f'{entry["title"]}:',
+                font_size=13,
+                text_color=TEXT["light_2"],
             )
             entry_label.grid(
                 column=0,
@@ -145,6 +149,7 @@ class NewAccount(TopLevel):
             return
         # Get the current Date Time
         data["Last Modified"] = tool.current_datetime()
+        data["UUID"] = uuid.uuid4()
         # Add data
         success = DataStore.add_account(data)
         if success:

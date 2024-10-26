@@ -65,11 +65,15 @@ class Authentication(ctk.CTkFrame):
             bg=BUTTON["bg-light"],
             hover_bg=BUTTON["hover-bg-l"],
             text_color=TEXT["dark"],
+            width=176,
         )
         new_account_btn.grid(column=0, row=row, sticky="w", pady=(20, 5))
 
         login_btn = tool.create_button(
-            self, command=self.__submit, title="Unlock Vault"
+            self,
+            command=self.__submit,
+            title="Unlock Vault",
+            width=176,
         )
         login_btn.grid(column=1, row=row, sticky="e", pady=(20, 5))
 

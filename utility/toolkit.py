@@ -1,4 +1,3 @@
-import datetime
 import random
 import string
 import hashlib
@@ -11,6 +10,7 @@ import customtkinter as ctk
 import cryptography.fernet as crypto
 from PIL import Image
 from typing import Union
+from datetime import datetime
 
 from utility.constants import *
 
@@ -35,7 +35,7 @@ def screen_size(window, width: int, height: int):
 
 
 def current_datetime() -> str:
-    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return datetime.now().strftime("%d %B %Y, %I:%M %p")
 
 
 def create_button(master, command, **kwargs) -> ctk.CTkButton:
