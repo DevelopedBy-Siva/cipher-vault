@@ -22,7 +22,7 @@ class Home(ctk.CTkFrame):
         self.__show_account_details()
 
         self.configure(bg_color=WINDOW["bg"], fg_color=WINDOW["bg"])
-        self.grid(column=0, row=0, sticky="news", padx=50, pady=30)
+        self.grid(column=0, row=0, sticky="news", padx=50, pady=(30, 55))
         self.grid_columnconfigure(0, weight=1)
 
     def __create_header(self) -> None:
@@ -51,12 +51,14 @@ class Home(ctk.CTkFrame):
         subheading.grid(column=0, row=1, sticky="w")
 
         # Create search box
-        search_entry = tool.create_entry(container, text_variable=self.__search_var)
-        search_entry.grid(column=0, row=1, sticky="nwse")
+        self.__search_entry = tool.create_entry(
+            container, text_variable=self.__search_var, text_color=TEXT["light"]
+        )
+        self.__search_entry.grid(column=0, row=1, sticky="nwse")
         # Workaround to show placeholder
-        search_entry.insert(0, _SEARCH_PLACEHOLDER_TEXT)
-        search_entry.bind("<FocusIn>", self.__clear_placeholder)
-        search_entry.bind("<FocusOut>", self.__show_placeholder)
+        self.__search_entry.insert(0, _SEARCH_PLACEHOLDER_TEXT)
+        self.__search_entry.bind("<FocusIn>", self.__clear_placeholder)
+        self.__search_entry.bind("<FocusOut>", self.__show_placeholder)
 
         # Create user options
         for idx, (key, val) in enumerate(USER_OPTIONS.items()):
@@ -88,20 +90,22 @@ class Home(ctk.CTkFrame):
         else:
             pass
 
-    def __clear_placeholder(self, event):
+    def __clear_placeholder(self, _):
         """
         Workaround: Clear search widget placeholder
         """
-        widget = event.widget
+        widget = self.__search_entry
         if Table.show_search_placeholder:
             widget.delete(0, ctk.END)
+            widget.configure(text_color=TEXT["dark"])
             Table.show_search_placeholder = False
 
-    def __show_placeholder(self, event):
+    def __show_placeholder(self, _):
         """
         Workaround: Show search widget placeholder
         """
-        widget = event.widget
+        widget = self.__search_entry
         if widget.get() == "":
             Table.show_search_placeholder = True
+            widget.configure(text_color=TEXT["light"])
             widget.insert(0, _SEARCH_PLACEHOLDER_TEXT)

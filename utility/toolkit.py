@@ -118,6 +118,7 @@ def create_entry(master, **kwargs) -> ctk.CTkEntry:
     value = kwargs.get("value", None)
     width = kwargs.get("width", 0)
     text_variable = kwargs.get("text_variable", None)
+    text_color = kwargs.get("text_color", TEXT["dark"])
 
     border = kwargs.get("border", True)
     border_width = 0
@@ -132,7 +133,7 @@ def create_entry(master, **kwargs) -> ctk.CTkEntry:
         fg_color=TEXT["bg"],
         border_color=border_color,
         border_width=border_width,
-        text_color=TEXT["dark"],
+        text_color=text_color,
         placeholder_text=placeholder,
         placeholder_text_color=TEXT["light"],
         height=height,

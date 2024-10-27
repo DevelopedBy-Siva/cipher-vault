@@ -37,7 +37,6 @@ class Table(ctk.CTkFrame):
         def handle_search(sv: ctk.StringVar):
             if not Table.show_search_placeholder:
                 search = sv.get().strip().lower()
-                print(search)
                 if search != self.__search:
                     self.__search = search
                     self.refresh()
