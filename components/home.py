@@ -6,14 +6,21 @@ from components.new_account import NewAccount
 from components.export_import import ExportImport
 from components.table import Table
 
+_SEARCH_PLACEHOLDER_TEXT = "Search accounts..."
+
 
 class Home(ctk.CTkFrame):
 
     def __init__(self, root: ctk.CTk) -> None:
         self.__root = root
         super().__init__(self.__root)
+        # Create a search variable to bind on change event
+        self.__search_var = ctk.StringVar()
+        # Create header widgets: search & user options
         self.__create_header()
+        # Render the table
         self.__show_account_details()
+
         self.configure(bg_color=WINDOW["bg"], fg_color=WINDOW["bg"])
         self.grid(column=0, row=0, sticky="news", padx=50, pady=30)
         self.grid_columnconfigure(0, weight=1)
@@ -44,8 +51,12 @@ class Home(ctk.CTkFrame):
         subheading.grid(column=0, row=1, sticky="w")
 
         # Create search box
-        search_box = tool.create_entry(container, placeholder="Search accounts...")
-        search_box.grid(column=0, row=1, sticky="nwse")
+        search_entry = tool.create_entry(container, text_variable=self.__search_var)
+        search_entry.grid(column=0, row=1, sticky="nwse")
+        # Workaround to show placeholder
+        search_entry.insert(0, _SEARCH_PLACEHOLDER_TEXT)
+        search_entry.bind("<FocusIn>", self.__clear_placeholder)
+        search_entry.bind("<FocusOut>", self.__show_placeholder)
 
         # Create user options
         for idx, (key, val) in enumerate(USER_OPTIONS.items()):
@@ -62,8 +73,8 @@ class Home(ctk.CTkFrame):
 
         table_container = tool.create_container(self, bg="red")
         table_container.grid(column=0, row=2, sticky="news", pady=(40, 0))
-
-        self.table = Table(self.__root, table_container)
+        # Create table
+        self.table = Table(self.__root, table_container, self.__search_var)
 
         table_container.grid_columnconfigure(0, weight=1)
         table_container.grid_rowconfigure(0, weight=1)
@@ -76,3 +87,21 @@ class Home(ctk.CTkFrame):
             _ = ExportImport(self.__root, self.table.refresh)
         else:
             pass
+
+    def __clear_placeholder(self, event):
+        """
+        Workaround: Clear search widget placeholder
+        """
+        widget = event.widget
+        if Table.show_search_placeholder:
+            widget.delete(0, ctk.END)
+            Table.show_search_placeholder = False
+
+    def __show_placeholder(self, event):
+        """
+        Workaround: Show search widget placeholder
+        """
+        widget = event.widget
+        if widget.get() == "":
+            Table.show_search_placeholder = True
+            widget.insert(0, _SEARCH_PLACEHOLDER_TEXT)

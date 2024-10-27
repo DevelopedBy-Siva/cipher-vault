@@ -6,20 +6,44 @@ from utility.constants import *
 from components.account import Account
 from components.data_store import DataStore
 
+_DATA_COLUMNS = ("Account", "Username", "Last Modified")
+
 
 class Table(ctk.CTkFrame):
 
-    __DATA_COLUMNS = ("Account", "Username", "Last Modified")
+    show_search_placeholder = True
 
-    def __init__(self, root: ctk.CTk, parent):
+    def __init__(self, root: ctk.CTk, parent, search_var: ctk.StringVar):
         self.__root = root
         self.__parent = parent
         self.__content_container = None
         super().__init__(self.__parent, fg_color=WINDOW["bg"], bg_color=WINDOW["bg"])
-        self.__render_data()  # render rows and columns
+        # Handle search
+        self.__search = self.__bind_search(search_var)
+        # render rows and columns
+        self.__render_data()
+
         self.grid(column=0, row=0, sticky="news")
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
+
+    def __bind_search(self, search_var: ctk.StringVar):
+        """
+        Bind and handle user search
+        Args:
+            search_var (ctk.StringVar): Search variable to detect on change event
+        """
+
+        def handle_search(sv: ctk.StringVar):
+            if not Table.show_search_placeholder:
+                search = sv.get().strip().lower()
+                print(search)
+                if search != self.__search:
+                    self.__search = search
+                    self.refresh()
+
+        search_var.trace_add("write", lambda i, j, k, sv=search_var: handle_search(sv))
+        return ""
 
     def __render_data(self):
         """
@@ -45,7 +69,7 @@ class Table(ctk.CTkFrame):
             column_wrapper, fg=BUTTON["bg-light"], bg=BUTTON["bg-light"]
         )
         container.grid(column=0, row=0, padx=(5, 110), sticky="we")
-        for idx, col in enumerate(self.__DATA_COLUMNS):
+        for idx, col in enumerate(_DATA_COLUMNS):
             column = tool.create_label(
                 container, title=col, font_size=12, bg="transparent"
             )
@@ -58,9 +82,18 @@ class Table(ctk.CTkFrame):
         """
         Table rows
         """
+
         # If vault is empty, display message
         if DataStore.account_df.size == 0:
-            self.__notify("No accounts stored in your vault.")
+            self.__notify("Nothing here yet! Add some accounts to get started.")
+            return
+
+        # Filter and render data
+        data_frame = DataStore.select_and_sort(search=self.__search)
+        if data_frame.size == 0:
+            self.__notify(
+                f"Hmm... couldn’t find '{self.__search}' in your vault. Time to add it?"
+            )
             return
 
         self.__content_container = ctk.CTkScrollableFrame(
@@ -75,15 +108,13 @@ class Table(ctk.CTkFrame):
         self.__content_container.grid_columnconfigure(0, weight=1)
         self.__content_container.grid_rowconfigure(1, weight=1)
 
-        # Filter and render data
-        data_frame = DataStore.select_and_sort()
         for row_no, (_, row) in enumerate(data_frame.iterrows()):
             each_row_container = tool.create_container(
                 self.__content_container, bg="transparent"
             )
             each_row_container.grid(column=0, row=row_no, sticky="ew")
             # Render each row
-            for idx, col_name in enumerate(self.__DATA_COLUMNS):
+            for idx, col_name in enumerate(_DATA_COLUMNS):
 
                 col_value = str(row[col_name]).capitalize()
                 data_column = tool.create_label(
@@ -132,7 +163,7 @@ class Table(ctk.CTkFrame):
         """
         bottom_border = tool.create_container(master, bg=TEXT["border-light"], height=1)
         bottom_border.grid(
-            column=0, row=1, columnspan=len(self.__DATA_COLUMNS) + 1, sticky="we"
+            column=0, row=1, columnspan=len(_DATA_COLUMNS) + 1, sticky="we"
         )
 
     def __open_account(self, data: pd.Series) -> None:

@@ -117,6 +117,7 @@ def create_entry(master, **kwargs) -> ctk.CTkEntry:
     show = kwargs.get("show", "")
     value = kwargs.get("value", None)
     width = kwargs.get("width", 0)
+    text_variable = kwargs.get("text_variable", None)
 
     border = kwargs.get("border", True)
     border_width = 0
@@ -137,6 +138,7 @@ def create_entry(master, **kwargs) -> ctk.CTkEntry:
         height=height,
         show=show,
         width=width,
+        textvariable=text_variable,
     )
     if value:
         entry.insert(0, value)

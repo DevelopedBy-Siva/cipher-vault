@@ -127,10 +127,12 @@ class DataStore:
             return False
 
     @staticmethod
-    def select_and_sort(ascending=False) -> pd.DataFrame:
+    def select_and_sort(ascending=False, search: str = "") -> pd.DataFrame:
         df = DataStore.account_df.sort_values(
             by=["Last Modified"], ascending=ascending, ignore_index=True
         )
+        if df.size:
+            df = df.loc[df["Account"].str.contains(search.strip())]
         return df
 
     @staticmethod
