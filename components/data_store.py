@@ -63,11 +63,20 @@ class DataStore:
             bool: True when success, else False
         """
         try:
-            new_data = {}
-            for key, val in data.items():
-                new_data[key] = [val]
+
+            # Remove 'Url' if empty
+            url = data.get("Url", None)
+            if isinstance(url, str) and len(url.strip()) == 0:
+                data.pop("Url")
+
+            # Form new data
+            new_data = {key: [data.get(key, float("NAN"))] for key in _MODAL.keys()}
+
             new_df = pd.DataFrame(new_data)
-            temp_df = pd.concat([DataStore.account_df, new_df])
+            temp_df = pd.concat([new_df, DataStore.account_df], ignore_index=True)
+
+            # Initialise 'Url' to empty if it's 'NaN'
+            temp_df["Url"] = temp_df["Url"].fillna(" ")
 
             tool.encrypt(DataStore.cipher_key, DataStore.data_file_name, temp_df)
             DataStore.account_df = temp_df
@@ -86,16 +95,18 @@ class DataStore:
             bool: True when success, else False
         """
         try:
-            columns_to_update = []
-            updated_values = []
-            for key, val in data.items():
-                columns_to_update.append(key)
-                updated_values.append(val)
+
+            # Remove 'Url' if empty
+            url = data.get("Url", None)
+            if isinstance(url, str) and len(url.strip()) == 0:
+                data.pop("Url")
 
             temp_df = DataStore.account_df.copy()
-            temp_df.loc[temp_df[temp_df["UUID"] == id].index, columns_to_update] = (
-                updated_values
-            )
+            # Update values
+            temp_df.loc[temp_df["UUID"] == id, list(data.keys())] = list(data.values())
+
+            # Initialise Url to empty if it's NaN
+            temp_df["Url"] = temp_df["Url"].fillna(" ")
 
             tool.encrypt(DataStore.cipher_key, DataStore.data_file_name, temp_df)
             DataStore.account_df = temp_df
@@ -106,9 +117,8 @@ class DataStore:
     @staticmethod
     def delete_account(id: str) -> bool:
         try:
-            temp_df = DataStore.account_df.copy()
             # Delete the row
-            temp_df = temp_df.drop(temp_df[temp_df["UUID"] == id].index)
+            temp_df = DataStore.account_df[DataStore.account_df["UUID"] != id]
             # Encrypt and store DataFrame after removing data
             tool.encrypt(DataStore.cipher_key, DataStore.data_file_name, temp_df)
             DataStore.account_df = temp_df
@@ -125,8 +135,6 @@ class DataStore:
 
     @staticmethod
     def merge_datastore(new_datastore: pd.DataFrame) -> None:
-        DataStore.account_df = pd.concat([DataStore.account_df, new_datastore])
-        DataStore.account_df.reset_index(drop=True, inplace=True)
-        tool.encrypt(
-            DataStore.cipher_key, DataStore.data_file_name, DataStore.account_df
-        )
+        temp_df = pd.concat([DataStore.account_df, new_datastore], ignore_index=True)
+        tool.encrypt(DataStore.cipher_key, DataStore.data_file_name, temp_df)
+        DataStore.account_df = temp_df

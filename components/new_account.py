@@ -141,9 +141,6 @@ class NewAccount(TopLevel):
                 else:
                     if isinstance(input_error, ctk.CTkLabel):
                         input_error.configure(text="")
-            # Initialise empty value to URL
-            if key == "url" and len(value) == 0:
-                value = " "
             data[str(key).title()] = value
         if not is_valid:
             return
