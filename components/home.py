@@ -1,10 +1,10 @@
 import customtkinter as ctk
 
-import utility.toolkit as tool
-from utility.constants import *
 from components.new_account import NewAccount
 from components.export_import import ExportImport
 from components.table import Table
+from custom_widgets import Entry, Frame, Label, Button
+from utility.constants import *
 
 _SEARCH_PLACEHOLDER_TEXT = "Search accounts..."
 
@@ -28,14 +28,14 @@ class Home(ctk.CTkFrame):
     def __create_header(self) -> None:
 
         # Create a header wrapper
-        container = tool.create_container(self)
+        container = Frame(self)
         container.grid(column=0, row=1, sticky="ew", pady=(20, 0))
 
         # Create header and subheading wrapper
-        label_container = tool.create_container(container)
+        label_container = Frame(container)
         label_container.grid(column=0, row=0, sticky="w", pady=(0, 40))
 
-        heading = tool.create_label(
+        heading = Label(
             label_container,
             title="Your Secure Vault",
             text_color=TEXT["dark"],
@@ -43,7 +43,7 @@ class Home(ctk.CTkFrame):
         )
         heading.grid(column=0, row=0, sticky="w")
 
-        subheading = tool.create_label(
+        subheading = Label(
             label_container,
             title="Easily manage and access all your passwords and sensitive information.",
             text_color=TEXT["light"],
@@ -51,8 +51,10 @@ class Home(ctk.CTkFrame):
         subheading.grid(column=0, row=1, sticky="w")
 
         # Create search box
-        self.__search_entry = tool.create_entry(
-            container, text_variable=self.__search_var, text_color=TEXT["light"]
+        self.__search_entry = Entry(
+            container,
+            text_variable=self.__search_var,
+            text_color=TEXT["light"],
         )
         self.__search_entry.grid(column=0, row=1, sticky="nwse")
         # Workaround to show placeholder
@@ -62,7 +64,7 @@ class Home(ctk.CTkFrame):
 
         # Create user options
         for idx, (key, val) in enumerate(USER_OPTIONS.items()):
-            button = tool.create_button(
+            button = Button(
                 container,
                 command=lambda key=key: self.__navigate_to(key),
                 title=val["title"],
@@ -73,7 +75,7 @@ class Home(ctk.CTkFrame):
 
     def __show_account_details(self) -> None:
 
-        table_container = tool.create_container(self, bg="red")
+        table_container = Frame(self, bg="red")
         table_container.grid(column=0, row=2, sticky="news", pady=(40, 0))
         # Create table
         self.table = Table(self.__root, table_container, self.__search_var)

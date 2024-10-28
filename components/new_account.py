@@ -4,15 +4,15 @@ from typing import Callable
 
 import utility.toolkit as tool
 from utility.constants import *
-from components.top_level import TopLevel
 from components.data_store import DataStore
+from custom_widgets import Entry, Frame, Label, Button, Image, TopLevel
 
 
 class NewAccount(TopLevel):
 
     __KEY = "new-password"
-    __password_hide_ico = tool.ctk_image("password-hide", (16, 16))
-    __password_show_ico = tool.ctk_image("password-show", (16, 16))
+    __password_hide_ico = Image("password-hide", (16, 16))
+    __password_show_ico = Image("password-show", (16, 16))
 
     def __init__(self, parent, refresh_table: Callable) -> None:
         super().__init__(parent, key=self.__KEY, grid_y_size=4)
@@ -29,7 +29,7 @@ class NewAccount(TopLevel):
             show = entry.get("show", "")
 
             row_idx += 1
-            entry_label = tool.create_label(
+            entry_label = Label(
                 self,
                 title=f'{entry["title"]}:',
                 font_size=13,
@@ -42,10 +42,10 @@ class NewAccount(TopLevel):
                 padx=(0, 25),
             )
 
-            entry_box_container = tool.create_container(
+            entry_box_container = Frame(
                 self, border_color=TEXT["border"], border_width=1
             )
-            entry_box = tool.create_entry(
+            entry_box = Entry(
                 entry_box_container,
                 placeholder=entry["placeholder"],
                 show=show,
@@ -56,7 +56,7 @@ class NewAccount(TopLevel):
             entry_box_column_span = 3
 
             if show == "*":
-                password_toggle_btn = tool.create_button(
+                password_toggle_btn = Button(
                     entry_box_container,
                     command=lambda: self.__toggle_password(
                         entry_box, password_toggle_btn
@@ -77,7 +77,7 @@ class NewAccount(TopLevel):
 
             command = entry.get("command", None)
             if isinstance(command, dict):
-                generate_button = tool.create_button(
+                generate_button = Button(
                     self,
                     command=self.__generate_password,
                     title=entry["command"]["title"],
@@ -105,9 +105,7 @@ class NewAccount(TopLevel):
 
             # Render Error
             row_idx += 1
-            entry_error = tool.create_label(
-                self, title="", font_size=12, text_color=TEXT["error"]
-            )
+            entry_error = Label(self, title="", font_size=12, text_color=TEXT["error"])
             entry_error.grid(
                 column=1,
                 row=row_idx,
@@ -118,9 +116,7 @@ class NewAccount(TopLevel):
             )
             self.__entries[key] = (entry_box, entry_error)
 
-        save_button = tool.create_button(
-            self, command=self.__save_account, title="Save to Vault"
-        )
+        save_button = Button(self, command=self.__save_account, title="Save to Vault")
         save_button.grid(column=1, columnspan=2, row=row_idx + 1, pady=(20, 0))
 
         self.grid_columnconfigure(1, weight=1)

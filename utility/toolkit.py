@@ -6,9 +6,7 @@ import io
 import os
 import pandas as pd
 import configparser as parser
-import customtkinter as ctk
 import cryptography.fernet as crypto
-from PIL import Image
 from typing import Union
 from datetime import datetime
 
@@ -36,120 +34,6 @@ def screen_size(window, width: int, height: int):
 
 def current_datetime() -> str:
     return datetime.now().strftime("%d %B %Y, %I:%M %p")
-
-
-def create_button(master, command, **kwargs) -> ctk.CTkButton:
-
-    text = kwargs.get("title", "Unknown")
-    font_size = kwargs.get("font_size", 12)
-    height = kwargs.get("height", 35)
-    width = kwargs.get("width", 140)
-    bg = kwargs.get("bg", BUTTON["bg"])
-    hover_bg = kwargs.get("hover_bg", BUTTON["hover-bg"])
-    text_color = kwargs.get("text_color", BUTTON["color"])
-    icon = kwargs.get("icon", None)
-
-    button = ctk.CTkButton(
-        master,
-        text=text.title(),
-        font=(TEXT["font"], font_size),
-        fg_color=bg,
-        bg_color=TEXT["bg"],
-        hover_color=hover_bg,
-        text_color=text_color,
-        height=height,
-        image=icon,
-        state="normal",
-        anchor="center",
-        command=command,
-        width=width,
-    )
-    return button
-
-
-def create_label(master, **kwargs) -> ctk.CTkLabel:
-
-    text = kwargs.get("title", "Unknown")
-    font_size = kwargs.get("font_size", 12)
-    font_weight = kwargs.get("font_weight", "normal")
-    text_color = kwargs.get("text_color", TEXT["dark"])
-    height = kwargs.get("height", 25)
-    bg = kwargs.get("bg", TEXT["bg"])
-    width = kwargs.get("width", 0)
-    justify = kwargs.get("justify", "left")
-
-    label = ctk.CTkLabel(
-        master,
-        text=text,
-        text_color=text_color,
-        font=(TEXT["font"], font_size, font_weight),
-        fg_color=bg,
-        bg_color=bg,
-        anchor="w",
-        height=height,
-        width=width,
-        wraplength=width,
-        justify=justify,
-    )
-    return label
-
-
-def create_container(master, **kwargs) -> ctk.CTkFrame:
-    bg = kwargs.get("bg", WINDOW["bg"])
-    fg = kwargs.get("fg", WINDOW["bg"])
-    border_width = kwargs.get("border_width", 0)
-    border_color = kwargs.get("border_color", TEXT["bg"])
-    height = kwargs.get("height", 0)
-    return ctk.CTkFrame(
-        master,
-        bg_color=fg,
-        fg_color=bg,
-        border_color=border_color,
-        border_width=border_width,
-        height=height,
-    )
-
-
-def create_entry(master, **kwargs) -> ctk.CTkEntry:
-
-    placeholder = kwargs.get("placeholder", "Enter input...")
-    height = kwargs.get("height", 35)
-    show = kwargs.get("show", "")
-    value = kwargs.get("value", None)
-    width = kwargs.get("width", 0)
-    text_variable = kwargs.get("text_variable", None)
-    text_color = kwargs.get("text_color", TEXT["dark"])
-
-    border = kwargs.get("border", True)
-    border_width = 0
-    border_color = TEXT["bg"]
-    if border:
-        border_width = 1
-        border_color = TEXT["border"]
-
-    entry = ctk.CTkEntry(
-        master,
-        bg_color=TEXT["bg"],
-        fg_color=TEXT["bg"],
-        border_color=border_color,
-        border_width=border_width,
-        text_color=text_color,
-        placeholder_text=placeholder,
-        placeholder_text_color=TEXT["light"],
-        height=height,
-        show=show,
-        width=width,
-        textvariable=text_variable,
-    )
-    if value:
-        entry.insert(0, value)
-    return entry
-
-
-def ctk_image(icon_name: str, size: tuple = (10, 10)) -> ctk.CTkImage:
-    icon_img = Image.open(BUTTON["icon"][icon_name])
-    icon = ctk.CTkImage(light_image=icon_img, dark_image=icon_img, size=size)
-    return icon
 
 
 def generate_password() -> str:

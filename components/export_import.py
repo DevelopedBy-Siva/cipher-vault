@@ -5,7 +5,7 @@ from typing import Callable
 
 import utility.toolkit as tool
 from components.data_store import DataStore
-from components.top_level import TopLevel
+from custom_widgets import Entry, Frame, TopLevel, Label, Button
 from utility.constants import *
 
 
@@ -30,24 +30,24 @@ class ExportImport(TopLevel):
             description="Import a vault from a previous account. To successfully complete the process, you’ll need to enter the password linked to the vault being imported.",
         )
         # Select button
-        self.__selection_import_btn = tool.create_button(
+        self.__selection_import_btn = Button(
             self.__import_container,
             title="Select Vault",
             command=self.__import_file_selection,
         )
         self.__selection_import_btn.grid(column=0, row=2, sticky="w", pady=(15, 0))
         # Import button
-        self.__import_btn = tool.create_button(
+        self.__import_btn = Button(
             self.__import_container, title="Import", command=self.__import_action
         )
         # Password entry
-        self.__import_password_entry = tool.create_entry(
+        self.__import_password_entry = Entry(
             self.__import_container,
             placeholder="Enter the password for the vault you're importing...",
             show="*",
         )
         # Display messages
-        self.__import_notify = tool.create_label(
+        self.__import_notify = Label(
             self.__import_container, title="", text_color=TEXT["error"], width=500
         )
         self.__import_notify.grid(
@@ -147,12 +147,12 @@ class ExportImport(TopLevel):
             description="Export your vault as an encrypted file. Do not rename or modify the file, as this will corrupt it and prevent decryption. Your current account credentials are used for encryption and will be required to import the file back into the app.",
         )
         # Export button
-        export_btn = tool.create_button(
+        export_btn = Button(
             export_container, title="Export", command=self.__export_action
         )
         export_btn.grid(column=0, row=2, sticky="w", pady=15)
         # Display messages
-        self.__export_notify = tool.create_label(
+        self.__export_notify = Label(
             export_container, title="", text_color=TEXT["error"]
         )
         self.__export_notify.grid(column=1, row=2, sticky="w", padx=(15, 0), pady=15)
@@ -199,14 +199,12 @@ class ExportImport(TopLevel):
         """
         Create a wrapper for import and export blocks
         """
-        container = tool.create_container(self)
+        container = Frame(self)
         # Container heading
-        title = tool.create_label(container, title=heading, font_size=15)
+        title = Label(container, title=heading, font_size=15)
         title.grid(column=0, row=0, sticky="we", columnspan=3)
         # Container Description
-        desc = tool.create_label(
-            container, title=description, text_color=TEXT["light"], width=500
-        )
+        desc = Label(container, title=description, text_color=TEXT["light"], width=500)
         desc.grid(column=0, row=1, sticky="we", pady=(2, 0), columnspan=3)
         return container
 

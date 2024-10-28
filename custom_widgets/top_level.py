@@ -1,6 +1,8 @@
 import customtkinter as ctk
 
 import utility.toolkit as tool
+from custom_widgets.frame import Frame
+from custom_widgets.label import Label
 from utility.constants import WINDOW, TEXT
 
 
@@ -46,12 +48,12 @@ class TopLevel(ctk.CTkToplevel):
         """
         Create the heading component
         """
-        label_container = tool.create_container(self)
+        label_container = Frame(self)
         label_container.grid(
             column=0, row=0, columnspan=self.__grid_y_size, sticky="w", pady=(0, 40)
         )
 
-        heading = tool.create_label(
+        heading = Label(
             label_container,
             title=WINDOW[self.__key]["heading"],
             text_color=TEXT["dark"],
@@ -59,7 +61,7 @@ class TopLevel(ctk.CTkToplevel):
         )
         heading.grid(column=0, row=0, sticky="w")
 
-        subheading = tool.create_label(
+        subheading = Label(
             label_container,
             title=WINDOW[self.__key]["desc"],
             text_color=TEXT["light"],

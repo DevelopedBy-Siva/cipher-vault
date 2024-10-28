@@ -3,6 +3,7 @@ import tkinter as tk
 
 import utility.toolkit as tool
 from components.auth import Authentication
+from custom_widgets import Label
 from utility.constants import WINDOW, APP_NAME, APP_ICON, TEXT
 
 
@@ -25,10 +26,10 @@ def main():
     _ = Authentication(root)
 
     # App Footer
-    footer = tool.create_label(
+    footer = Label(
         root,
-        title="Crafted by Siva with ❤️  |  sivasanker.com",
-        text_color=TEXT["light"],
+        title="Crafted by Siva with 🖤  |  sivasanker.com",
+        text_color=TEXT["light_2"],
         font_size=11,
     )
     footer.place(relx=0.5, rely=0.97, anchor="center")

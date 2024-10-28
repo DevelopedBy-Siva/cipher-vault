@@ -2,8 +2,9 @@ import customtkinter as ctk
 
 import utility.toolkit as tool
 from utility.constants import *
-from components.home import Home
 from components.data_store import DataStore
+from components.home import Home
+from custom_widgets import Entry, Label, Button
 
 
 class Authentication(ctk.CTkFrame):
@@ -19,9 +20,9 @@ class Authentication(ctk.CTkFrame):
         """
         Create the auth screen
         """
-        title = tool.create_label(self, title="Access Your Secure Vault", font_size=32)
+        title = Label(self, title="Access Your Secure Vault", font_size=32)
         title.grid(column=0, row=0, columnspan=2)
-        description = tool.create_label(
+        description = Label(
             self,
             title="Access your vault with CipherVault credentials or quickly set up a new account. Your data is encrypted and stored locally.",
             text_color=TEXT["light"],
@@ -33,11 +34,11 @@ class Authentication(ctk.CTkFrame):
         row = 1
         for key, value in AUTH_FIELDS.items():
             row += 1
-            entry_label = tool.create_label(self, title=value["title"], font_size=13)
+            entry_label = Label(self, title=value["title"], font_size=13)
             entry_label.grid(column=0, row=row, sticky="w", pady=(2, 2), columnspan=2)
 
             row += 1
-            entry = tool.create_entry(
+            entry = Entry(
                 self,
                 width=365,
                 height=40,
@@ -47,7 +48,7 @@ class Authentication(ctk.CTkFrame):
             entry.grid(column=0, row=row, sticky="w", columnspan=2)
 
             row += 1
-            entry_error = tool.create_label(
+            entry_error = Label(
                 self,
                 title="",
                 font_size=12,
@@ -58,7 +59,7 @@ class Authentication(ctk.CTkFrame):
             self.__entries[key] = (entry, entry_error)
 
         row += 1
-        new_account_btn = tool.create_button(
+        new_account_btn = Button(
             self,
             command=lambda: self.__submit(True),
             title="Create Account",
@@ -69,7 +70,7 @@ class Authentication(ctk.CTkFrame):
         )
         new_account_btn.grid(column=0, row=row, sticky="w", pady=(20, 5))
 
-        login_btn = tool.create_button(
+        login_btn = Button(
             self,
             command=self.__submit,
             title="Unlock Vault",

@@ -4,8 +4,9 @@ import pandas as pd
 from typing import Callable
 
 import utility.toolkit as tool
-from components.top_level import TopLevel
 from components.data_store import DataStore
+from custom_widgets import Entry, Frame, TopLevel, Label, Button, Image
+
 from utility.constants import *
 
 
@@ -24,7 +25,7 @@ class Account(TopLevel):
         self.grid_rowconfigure(1, weight=1)
 
     def __content(self) -> None:
-        container = tool.create_container(self)
+        container = Frame(self)
         container.grid(column=0, row=1, sticky="news")
         container.grid_columnconfigure(0, weight=1)
 
@@ -35,8 +36,8 @@ class Account(TopLevel):
             if not item:
                 continue
 
-            item_container = tool.create_container(container)
-            label = tool.create_label(
+            item_container = Frame(container)
+            label = Label(
                 item_container,
                 title=f'{val["title"]}:',
                 width=135,
@@ -45,7 +46,7 @@ class Account(TopLevel):
             )
             label.grid(column=0, row=0, sticky="w")
             if not val["editable"]:
-                non_editable_field = tool.create_label(
+                non_editable_field = Label(
                     item_container,
                     title=item,
                     font_size=12,
@@ -58,26 +59,26 @@ class Account(TopLevel):
                     padx=(3, 0),
                 )
             else:
-                editable_field = tool.create_entry(
+                editable_field = Entry(
                     item_container,
                     value=item.strip(),
                     placeholder=val["placeholder"],
                 )
                 editable_field.grid(column=1, row=0, sticky="we")
 
-                copy_btn = tool.create_button(
+                copy_btn = Button(
                     item_container,
                     command=lambda text=str(item): self.__copy_to_clipboard(text),
                     width=40,
                     title="",
-                    icon=tool.ctk_image("copy", (15, 15)),
+                    icon=Image("copy", (15, 15)),
                     bg=BUTTON["bg-light"],
                     hover_bg=BUTTON["hover-bg-l"],
                 )
                 copy_btn.grid(column=2, row=0, sticky="we", padx=(8, 0))
 
                 if key == "Password":
-                    generate_password_btn = tool.create_button(
+                    generate_password_btn = Button(
                         item_container,
                         command=self.__generate_password,
                         title="Generate New",
@@ -90,7 +91,7 @@ class Account(TopLevel):
                         column=3, row=0, sticky="we", padx=(8, 0)
                     )
 
-                error_field = tool.create_label(
+                error_field = Label(
                     item_container,
                     text_color=TEXT["error"],
                     title="",
@@ -103,12 +104,12 @@ class Account(TopLevel):
             item_container.grid_columnconfigure(1, weight=1)
             row_count += 1
 
-        btn_container = tool.create_container(container)
+        btn_container = Frame(container)
         btn_container.grid(column=0, row=row_count, sticky="we", pady=(25, 0))
         btn_container.grid_columnconfigure(0, weight=1, uniform="account_btn")
         btn_container.grid_columnconfigure(1, weight=1, uniform="account_btn")
 
-        delete_btn = tool.create_button(
+        delete_btn = Button(
             btn_container,
             self.__delete_account,
             title="Delete",
@@ -119,7 +120,7 @@ class Account(TopLevel):
         )
         delete_btn.grid(column=0, row=0, sticky="e", padx=(0, 5), pady=(5, 0))
 
-        save_btn = tool.create_button(
+        save_btn = Button(
             btn_container,
             self.__save_account,
             title="Save",
