@@ -1,6 +1,6 @@
-# tk-password-manager
+# cipher-vault
 
-A password manager app using Tkinter and Pandas
+A password manager using Tkinter, Pandas, and Fernet encryption/decryption.
 
 ### How to run
 
